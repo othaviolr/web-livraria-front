@@ -22,3 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+node_modules/
+dist/
+.vscode/
+.vite/
+*.log
+.DS_Store
+Thumbs.db
