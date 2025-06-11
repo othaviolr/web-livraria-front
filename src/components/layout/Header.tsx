@@ -1,53 +1,63 @@
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Heart, MoreHorizontal, Bookmark, User } from "lucide-react";
+import { useState } from "react";
+import { Heart, Bookmark } from "lucide-react";
+import { GoogleLogo } from "@/components/ui/GoogleLogo";
 
 export const Header = () => {
+  const [loggedIn, setLoggedIn] = useState(false);
+
   return (
-    <header className="w-full bg-white shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-        {/* Logo */}
-        <div className="flex items-center">
-          <h1 className="text-2xl font-bold text-bookstore-text-dark">
-            Livraria do Tavin
-          </h1>
-        </div>
+    <header className="relative bg-white py-4">
+      {/* Logo no canto esquerdo da tela */}
+      <div className="absolute left-6 top-1/2 -translate-y-1/2 text-xl font-cursive font-bold text-bookstore-orange cursor-pointer">
+        Livraria do Tavin
+      </div>
 
-        {/* Center Navigation */}
-        <div className="flex items-center gap-4">
-          <Link to="/livros">
-            <Button className="bg-bookstore-orange hover:bg-bookstore-orange-hover text-white px-6 py-2 rounded-full font-medium">
-              📚 Livros
-            </Button>
-          </Link>
-          <Link to="/ranking">
-            <Button
-              variant="outline"
-              className="border-gray-300 text-gray-700 px-6 py-2 rounded-full font-medium hover:bg-gray-50"
+      {/* Área central dos botões */}
+      <nav className="max-w-7xl mx-auto flex justify-center gap-6">
+        <button
+          className="px-6 py-2 rounded-full font-semibold text-white"
+          style={{ backgroundColor: "#DAAA63" }}
+          onClick={() => alert("Ir para página Livros")}
+        >
+          Livros
+        </button>
+        <button
+          className="px-6 py-2 rounded-full border border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 transition"
+          onClick={() => alert("Ir para página Ranking")}
+        >
+          Ranking
+        </button>
+      </nav>
+
+      {/* Login / ícones no canto direito da tela */}
+      <div className="absolute right-6 top-1/2 -translate-y-1/2 flex items-center gap-6">
+        {loggedIn ? (
+          <>
+            <button
+              aria-label="Marcador"
+              className="text-gray-600 hover:text-[#DAAA63] transition"
             >
-              📈 Ranking
-            </Button>
-          </Link>
-        </div>
-
-        {/* Right Actions */}
-        <div className="flex items-center gap-3">
-          <Button variant="outline" size="sm" className="text-sm">
-            Registrar/Login
-          </Button>
-          <Button variant="ghost" size="icon">
-            <Heart className="h-5 w-5" />
-          </Button>
-          <Button variant="ghost" size="icon">
-            <Bookmark className="h-5 w-5" />
-          </Button>
-          <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
-            <User className="h-4 w-4 text-gray-600" />
-          </div>
-          <Button variant="ghost" size="icon">
-            <MoreHorizontal className="h-5 w-5" />
-          </Button>
-        </div>
+              <Bookmark className="w-5 h-5" />
+            </button>
+            <button
+              aria-label="Lista de desejos"
+              className="text-gray-600 hover:text-[#DAAA63] transition"
+            >
+              <Heart className="w-5 h-5" />
+            </button>
+            <div className="w-7 h-7 rounded-full bg-[#DAAA63] flex items-center justify-center text-white font-bold cursor-pointer select-none text-sm">
+              T
+            </div>
+          </>
+        ) : (
+          <button
+            onClick={() => setLoggedIn(true)}
+            className="flex items-center gap-2 rounded-full border border-gray-300 px-3 py-1.5 text-gray-700 hover:bg-gray-100 transition text-sm"
+          >
+            <GoogleLogo className="w-4 h-4" />
+            <span>Login com Google</span>
+          </button>
+        )}
       </div>
     </header>
   );
