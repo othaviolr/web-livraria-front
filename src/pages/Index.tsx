@@ -1,13 +1,9 @@
-import { Header } from "@/components/Header";
-import { HeroSection } from "@/components/HeroSection";
-import { BookRecommendations } from "@/components/BookRecommendations";
+import HeroSection from "@/components/hero/HeroSection";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-stone-100">
-      <Header />
       <HeroSection />
-      <BookRecommendations />
     </div>
   );
 };
