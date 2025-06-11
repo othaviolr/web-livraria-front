@@ -1,4 +1,4 @@
-import { BookCard } from "./BookCard";
+import { BookCard } from "@/components/book/BookCard";
 
 interface Book {
   title: string;
@@ -8,7 +8,7 @@ interface Book {
 
 interface BookPodiumProps {
   title: string;
-  books: [Book, Book, Book]; // Exactly 3 books
+  books: readonly [Book, Book, Book]; // aceitando readonly tuple
   className?: string;
 }
 

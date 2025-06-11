@@ -1,7 +1,7 @@
-import { Header } from "@/components/Header";
-import { BookPodium } from "@/components/BookPodium";
-import { AuthorCard } from "@/components/AuthorCard";
-import { BookCard } from "@/components/BookCard";
+import { Header } from "@/components/layout/Header";
+import { BookPodium } from "@/components/book/BookPodium";
+import { AuthorCard } from "@/components/spotlight/AuthorCard";
+import { BookCard } from "@/components/book/BookCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
@@ -34,19 +34,19 @@ const Index = () => {
       title: "서울의 봄",
       author: "김미영",
       image:
-        "https://images.unsplash.com/photo-1621351183012-e2f9972dd9bf?w=300&h=450&fit=crop&crop=center",
+        "",
     },
     {
       title: "한강의 기억",
       author: "이정호",
       image:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=450&fit=crop&crop=center",
+        "",
     },
     {
       title: "달빛 이야기",
       author: "박서연",
       image:
-        "https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=300&h=450&fit=crop&crop=center",
+        "",
     },
   ] as const;
 
@@ -55,21 +55,21 @@ const Index = () => {
       title: "1984",
       author: "George Orwell",
       image:
-        "https://images.unsplash.com/photo-1495640388908-05fa85288e61?w=300&h=450&fit=crop&crop=center",
+        "",
       rating: 5,
     },
     {
       title: "Harry Potter",
       author: "J.K. Rowling",
       image:
-        "https://images.unsplash.com/photo-1621944190310-e3cca1564bd7?w=300&h=450&fit=crop&crop=center",
+        "",
       rating: 4,
     },
     {
       title: "Lord of the Rings",
       author: "J.R.R. Tolkien",
       image:
-        "https://images.unsplash.com/photo-1618556448411-6ad7e12c4e64?w=300&h=450&fit=crop&crop=center",
+        "",
       rating: 5,
     },
   ];
@@ -116,7 +116,7 @@ const Index = () => {
               name="Noah Sebastian"
               collection="Noah Sebastian Collection"
               bookCount={79}
-              image="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face"
+              image=""
               className="w-full max-w-xs"
             />
           </div>
