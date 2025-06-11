@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Star } from "lucide-react";
 
 interface BookCardProps {
@@ -16,7 +15,7 @@ export const BookCard = ({
   author,
   image,
   rating,
-  showBuyButton = true,
+  showBuyButton = false,
   className = "",
 }: BookCardProps) => {
   const renderStars = (rating: number) => {
@@ -31,36 +30,31 @@ export const BookCard = ({
   };
 
   return (
-    <Card
-      className={`p-6 hover:shadow-xl transition-all duration-300 bg-white rounded-2xl border-0 shadow-lg ${className}`}
-    >
-      <div className="aspect-[3/4] mb-4 overflow-hidden rounded-xl">
+    <div className={`flex flex-col items-center ${className}`}>
+      <div className="relative group">
         <img
           src={image}
           alt={title}
-          className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+          className="w-32 h-48 object-cover rounded-lg shadow-md group-hover:shadow-lg transition-shadow"
         />
       </div>
 
       {rating && (
-        <div className="flex items-center gap-1 mb-3">
+        <div className="flex items-center gap-1 mt-2">
           {renderStars(rating)}
         </div>
       )}
 
-      <h3 className="font-semibold text-gray-900 mb-2 text-lg leading-tight">
+      <h3 className="font-medium text-bookstore-text-dark mt-2 text-center text-sm max-w-32">
         {title}
       </h3>
-      <p className="text-gray-600 text-sm mb-4">{author}</p>
+      <p className="text-bookstore-text-gray text-sm text-center">{author}</p>
 
       {showBuyButton && (
-        <Button
-          variant="outline"
-          className="w-full bg-yellow-400 border-yellow-400 text-black hover:bg-yellow-500 hover:border-yellow-500 rounded-full font-medium py-2"
-        >
-          Buy Now
+        <Button className="mt-3 bg-bookstore-orange hover:bg-bookstore-orange-hover text-white px-4 py-1 rounded-full text-sm">
+          Comprar
         </Button>
       )}
-    </Card>
+    </div>
   );
 };

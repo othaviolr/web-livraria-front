@@ -62,11 +62,23 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // Bookstore specific colors
+        bookstore: {
+          orange: "#E97845",
+          "orange-hover": "#D96A40",
+          "text-gray": "#6B7280",
+          "text-dark": "#1F2937",
+          cream: "#FAF9F6",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      fontFamily: {
+        cursive: ["Dancing Script", "cursive"],
+        elegant: ["Playfair Display", "serif"],
       },
       keyframes: {
         "accordion-down": {
