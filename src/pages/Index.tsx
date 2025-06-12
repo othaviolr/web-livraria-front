@@ -1,6 +1,5 @@
-import { HeroSection } from "@/components/hero/HeroSection";
-import { BookPodium } from "@/components/book/BookPodium";
-import GenreTitle from "@/components/ui/GenreTitle";
+import HeroSection from "@/components/hero/HeroSection";
+import TopSection from "@/components/home/TopSection";
 
 interface Book {
   title: string;
@@ -8,7 +7,6 @@ interface Book {
   image: string;
 }
 
-// books já tipados como tupla de 3 elementos, para bater com o que o BookPodium espera
 const books: [Book, Book, Book] = [
   { title: "Livro Esquerda", author: "Autor 1", image: "/images/left-book.jpg" },
   { title: "Livro Centro", author: "Autor 2", image: "/images/center-book.jpg" },
@@ -17,15 +15,15 @@ const books: [Book, Book, Book] = [
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-bookstore-bg flex justify-start px-10 pt-[225px] max-w-[1920px] mx-auto">
+    <main className="min-h-screen bg-bookstore-bg flex justify-start px-10 pt-[139px] max-w-[1920px] mx-auto">
       {/* Lado esquerdo: Hero (título + barra de busca) */}
       <div className="flex flex-col max-w-xs mr-20">
         <HeroSection />
       </div>
 
-      {/* Lado direito: Novos & Tendências + Podium */}
-      <section className="flex flex-col items-center max-w-[551px]">
-        <div className="self-start mb-4">
+      {/* Lado direito: Títulos e cards */}
+      <section className="flex flex-col items-start max-w-[1200px]">
+        <div className="mb-4">
           <h1 className="font-cursive text-5xl font-bold text-bookstore-text-dark leading-tight">
             Novos & Tendências
           </h1>
@@ -34,9 +32,7 @@ export default function Home() {
           </p>
         </div>
 
-        <BookPodium books={books} className="" />
-
-        <GenreTitle className="mt-6 text-center" genreName="Dark Romance" />
+        <TopSection books={books} />
       </section>
     </main>
   );

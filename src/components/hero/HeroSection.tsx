@@ -1,33 +1,23 @@
-import { BookPodium } from "@/components/book/BookPodium";
-import GenreTitle from "@/components/ui/GenreTitle";
+import { FiSearch } from "react-icons/fi";
 
-const books = [
-  { title: "", author: "", image: "/path/to/left-book.jpg" },
-  { title: "", author: "", image: "/path/to/center-book.jpg" },
-  { title: "", author: "", image: "/path/to/right-book.jpg" },
-];
-
-export const HeroSection = () => {
+export default function HeroSection() {
   return (
-    <section className="flex items-end px-10 pt-[225px] max-w-[900px] gap-10">
-      {/* Texto "Novos & Tendências" à esquerda */}
-      <div className="flex flex-col max-w-xs">
-        <h1 className="font-cursive text-5xl font-bold text-bookstore-text-dark leading-tight no-underline mb-2">
-          Novos & Tendências
-        </h1>
-        <p className="text-lg text-bookstore-text-gray italic font-elegant">
-          Explore novos mundos de autores
-        </p>
-      </div>
+    <section className="px-12 pt-12">
+      <h2 className="text-4xl text-orange-600 font-bold italic">
+        Novos & Tendências
+      </h2>
+      <p className="text-gray-500 mt-1 mb-4">
+        Explore novos mundos de autores
+      </p>
 
-      {/* Podium e gênero à direita */}
-      <div className="flex flex-col items-center">
-        <BookPodium
-          books={books as [typeof books[0], typeof books[1], typeof books[2]]}
-          className="max-w-[551px]"
+      <div className="flex items-center w-full max-w-xl bg-white shadow-md rounded-full px-4 py-2 mt-2">
+        <input
+          className="flex-1 outline-none bg-transparent text-gray-700"
+          type="text"
+          placeholder="Livros, autores e editoras"
         />
-        <GenreTitle className="mt-4" genreName="Dark Romance" />
+        <FiSearch className="text-xl text-orange-500" />
       </div>
     </section>
   );
-};
+}
