@@ -1,141 +1,43 @@
-import { Header } from "@/components/layout/Header";
+import { HeroSection } from "@/components/hero/HeroSection";
 import { BookPodium } from "@/components/book/BookPodium";
-import { AuthorCard } from "@/components/spotlight/AuthorCard";
-import { BookCard } from "@/components/book/BookCard";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import GenreTitle from "@/components/ui/GenreTitle";
 
-const Index = () => {
-  const darkRomanceBooks = [
-    {
-      title: "Broken Dreams",
-      author: "Sarah Chen",
-      image:
-        "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=300&h=450&fit=crop&crop=center",
-    },
-    {
-      title: "Midnight Desires",
-      author: "Elena Rodriguez",
-      image:
-        "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=300&h=450&fit=crop&crop=center",
-    },
-    {
-      title: "Dark Hearts",
-      author: "James Wilson",
-      image:
-        "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=300&h=450&fit=crop&crop=center",
-    },
-  ] as const;
+interface Book {
+  title: string;
+  author: string;
+  image: string;
+}
 
-  const koreanLiteratureBooks = [
-    { title: "서울의 봄", author: "김미영", image: "" },
-    { title: "한강의 기억", author: "이정호", image: "" },
-    { title: "달빛 이야기", author: "박서연", image: "" },
-  ] as const;
+// books já tipados como tupla de 3 elementos, para bater com o que o BookPodium espera
+const books: [Book, Book, Book] = [
+  { title: "Livro Esquerda", author: "Autor 1", image: "/images/left-book.jpg" },
+  { title: "Livro Centro", author: "Autor 2", image: "/images/center-book.jpg" },
+  { title: "Livro Direita", author: "Autor 3", image: "/images/right-book.jpg" },
+];
 
-  const topRatedBooks = [
-    { title: "1984", author: "George Orwell", image: "", rating: 5 },
-    { title: "Harry Potter", author: "J.K. Rowling", image: "", rating: 4 },
-    { title: "Lord of the Rings", author: "J.R.R. Tolkien", image: "", rating: 5 },
-  ];
-
+export default function Home() {
   return (
-    <div className="h-screen bg-bookstore-cream flex flex-col overflow-hidden">
-      <Header />
+    <main className="min-h-screen bg-bookstore-bg flex justify-start px-10 pt-[225px] max-w-[1920px] mx-auto">
+      {/* Lado esquerdo: Hero (título + barra de busca) */}
+      <div className="flex flex-col max-w-xs mr-20">
+        <HeroSection />
+      </div>
 
-      <main className="flex-1 max-w-7xl mx-auto px-6 py-4 flex flex-col justify-between">
-        {/* Hero Section */}
-        <section className="text-center mb-6">
-          <h1 className="font-cursive text-5xl font-bold text-bookstore-text-dark mb-1">
+      {/* Lado direito: Novos & Tendências + Podium */}
+      <section className="flex flex-col items-center max-w-[551px]">
+        <div className="self-start mb-4">
+          <h1 className="font-cursive text-5xl font-bold text-bookstore-text-dark leading-tight">
             Novos & Tendências
           </h1>
-          <p className="text-lg text-bookstore-text-gray font-elegant mb-6">
+          <p className="text-lg text-bookstore-text-gray italic font-elegant mt-1">
             Explore novos mundos de autores
           </p>
+        </div>
 
-          {/* Search Bar */}
-          <div className="max-w-md mx-auto relative">
-            <Input
-              placeholder="Livros, autores e editora"
-              className="pl-4 pr-12 py-3 rounded-full border-gray-300 text-base"
-            />
-            <Button
-              size="icon"
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-[#DAAA63] hover:bg-[#cbb77a] rounded-full"
-            >
-              <Search className="h-5 w-5 text-white" />
-            </Button>
-          </div>
-        </section>
+        <BookPodium books={books} className="" />
 
-        {/* Featured Sections */}
-        <section className="grid lg:grid-cols-3 gap-10 mb-8 flex-shrink-0">
-          {/* Dark Romance Podium */}
-          <div className="lg:col-span-1">
-            <BookPodium title="Dark Romance" books={darkRomanceBooks} />
-          </div>
-
-          {/* Author of the Year */}
-          <div className="lg:col-span-1 flex justify-center">
-            <AuthorCard
-              name="Noah Sebastian"
-              collection="Noah Sebastian Collection"
-              bookCount={79}
-              image=""
-              className="w-full max-w-xs"
-            />
-          </div>
-
-          {/* Korean Literature */}
-          <div className="lg:col-span-1">
-            <h2 className="font-cursive text-2xl font-bold text-bookstore-text-dark mb-1 text-center">
-              Literatura Coreana
-            </h2>
-            <p className="text-bookstore-text-gray text-center mb-5 italic">
-              Descoberta
-            </p>
-
-            <div className="flex justify-center gap-4">
-              {koreanLiteratureBooks.map((book, index) => (
-                <BookCard
-                  key={index}
-                  title={book.title}
-                  author={book.author}
-                  image={book.image}
-                  className="transform scale-90"
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Shelf Separator */}
-        <div className="w-full h-px bg-gradient-to-r from-transparent via-bookstore-text-gray to-transparent mb-8"></div>
-        <div className="w-full h-2 bg-gradient-to-r from-amber-100 via-amber-200 to-amber-100 rounded-full mb-8 shadow-inner"></div>
-
-        {/* Top Rated Books */}
-        <section className="flex-shrink-0">
-          <h2 className="font-cursive text-3xl font-bold text-bookstore-text-dark text-center mb-8">
-            Mais Avaliados
-          </h2>
-
-          <div className="grid md:grid-cols-3 gap-8 justify-items-center">
-            {topRatedBooks.map((book, index) => (
-              <BookCard
-                key={index}
-                title={book.title}
-                author={book.author}
-                image={book.image}
-                rating={book.rating}
-                showBuyButton={true}
-              />
-            ))}
-          </div>
-        </section>
-      </main>
-    </div>
+        <GenreTitle className="mt-6 text-center" genreName="Dark Romance" />
+      </section>
+    </main>
   );
-};
-
-export default Index;
+}

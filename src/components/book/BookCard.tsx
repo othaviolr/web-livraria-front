@@ -8,6 +8,9 @@ interface BookCardProps {
   rating?: number;
   showBuyButton?: boolean;
   className?: string;
+  rotate?: "left" | "right" | "none";
+  style?: React.CSSProperties;
+  hideTitleSubtitle?: boolean;
 }
 
 export const BookCard = ({
@@ -17,6 +20,9 @@ export const BookCard = ({
   rating,
   showBuyButton = false,
   className = "",
+  rotate = "none",
+  style,
+  hideTitleSubtitle = false,
 }: BookCardProps) => {
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, i) => (
@@ -29,29 +35,41 @@ export const BookCard = ({
     ));
   };
 
+  let rotationClass = "";
+  if (rotate === "left") rotationClass = "rotate-[-25deg]";
+  else if (rotate === "right") rotationClass = "rotate-[25deg]";
+
   return (
-    <div className={`flex flex-col items-center ${className}`}>
-      <div className="relative group">
+    <div
+      className={`bg-transparent flex flex-col items-center p-0 transition-shadow duration-300 ${rotationClass} ${className}`}
+      style={style}
+    >
+      <div className="relative w-full h-full overflow-hidden rounded-[20px]">
         <img
           src={image}
           alt={title}
-          className="w-32 h-48 object-cover rounded-lg shadow-md group-hover:shadow-lg transition-shadow"
+          className="w-full h-full object-cover"
+          draggable={false}
         />
       </div>
 
-      {rating && (
-        <div className="flex items-center gap-1 mt-2">
-          {renderStars(rating)}
-        </div>
+      {!hideTitleSubtitle && (
+        <>
+          {rating && (
+            <div className="flex items-center gap-1 mb-2">{renderStars(rating)}</div>
+          )}
+
+          <h3 className="font-cursive text-lg text-bookstore-text-dark text-center leading-snug mb-1">
+            {title}
+          </h3>
+          <p className="text-bookstore-text-gray text-sm italic text-center mb-4">
+            {author}
+          </p>
+        </>
       )}
 
-      <h3 className="font-medium text-bookstore-text-dark mt-2 text-center text-sm max-w-32">
-        {title}
-      </h3>
-      <p className="text-bookstore-text-gray text-sm text-center">{author}</p>
-
       {showBuyButton && (
-        <Button className="mt-3 bg-bookstore-orange hover:bg-bookstore-orange-hover text-white px-4 py-1 rounded-full text-sm">
+        <Button className="bg-bookstore-orange hover:bg-bookstore-orange-hover text-white px-5 py-2 rounded-full text-sm shadow-md transition-colors duration-300 w-full">
           Comprar
         </Button>
       )}
