@@ -3,6 +3,8 @@ import HeroSection from "../components/hero/HeroSection";
 import { PodiumBooks } from "@/components/hero/PodiumBooks";
 import BookShelfDivider from "../components/layout/BookShelfDivider";
 import BookShowcase from "../components/book/BookShowcase";
+import { AuthorOfTheYearCard } from "@/components/spotlight/AuthorOfTheYearCard";
+import { KoreanLiteratureCard } from "@/components/spotlight/KoreanLiteratureCard";
 
 const books: [ 
   { title: string; author: string; image: string },
@@ -19,7 +21,11 @@ export default function Home() {
     <>
       <Header />
       <HeroSection />
-      <PodiumBooks books={books} />
+      <div className="flex items-start gap-6 mt-10">
+        <PodiumBooks books={books} />
+        <AuthorOfTheYearCard />
+        <KoreanLiteratureCard />
+      </div>
       <BookShelfDivider />
       <BookShowcase />
     </>

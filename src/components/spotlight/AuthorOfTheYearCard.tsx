@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 export const AuthorOfTheYearCard = () => {
   return (
     <div className="w-[220px] h-[360px] bg-white rounded-2xl shadow-md flex flex-col items-center justify-center px-4 text-center">
