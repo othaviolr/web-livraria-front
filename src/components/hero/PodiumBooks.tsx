@@ -1,10 +1,4 @@
-import Image from "next/image";
-
-interface Book {
-  title: string;
-  author: string;
-  image: string;
-}
+import type { Book } from "@/types/Book";
 
 interface PodiumBooksProps {
   books: [Book, Book, Book];

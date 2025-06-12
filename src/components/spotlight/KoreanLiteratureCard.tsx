@@ -1,31 +1,36 @@
 export const KoreanLiteratureCard = () => {
   return (
-    <div className="w-[220px] h-[360px] bg-white rounded-2xl shadow-md flex flex-col items-center justify-center px-4 text-center">
-      <h3 className="text-lg font-cursive text-orange-500 mb-2">Literatura Coreana</h3>
-      <div className="flex gap-2">
+    <div className="relative w-[268px] h-[372px] bg-[#D5D4D2] rounded-2xl shadow-md px-4 pt-4 pb-2 flex flex-col justify-between overflow-hidden">
+      {/* Título e descrição no topo */}
+      <div className="text-center">
+        <h3 className="text-xl font-cursive text-black">Literatura Coreana</h3>
+        <p className="text-sm text-gray-600 mt-1">Descubra obras incríveis</p>
+      </div>
+
+      {/* Livros sobrepostos e encostando no chão */}
+      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 flex items-end gap-[-12px]">
         <img
           src="/livros/k1.jpg"
           alt="Livro K1"
-          width={60}
-          height={90}
-          className="rounded-md"
+          width={155}
+          height={224}
+          className="rounded-md z-30"
         />
         <img
           src="/livros/k2.jpg"
           alt="Livro K2"
-          width={60}
-          height={90}
-          className="rounded-md"
+          width={134}
+          height={201}
+          className="rounded-md z-20"
         />
         <img
           src="/livros/k3.jpg"
           alt="Livro K3"
-          width={60}
-          height={90}
-          className="rounded-md"
+          width={116}
+          height={180}
+          className="rounded-md z-10"
         />
       </div>
-      <p className="mt-2 text-sm text-gray-600">Descubra obras incríveis</p>
     </div>
   );
 };
