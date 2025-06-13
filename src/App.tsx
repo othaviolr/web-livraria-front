@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "@/pages/Home";
-import Livros from "./pages/Livros";
-import Ranking from "./pages/Ranking";
+import Livros from "@/pages/Livros";
+import Ranking from "@/pages/Ranking";
 
 export default function App() {
   return (

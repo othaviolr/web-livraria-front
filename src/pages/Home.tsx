@@ -1,52 +1,32 @@
-import Image from "next/image";
+import Header from "@/components/layout/Header";
+import HeroSection from "@/components/hero/HeroSection";
+import BookShelfDivider from "@/components/layout/BookShelfDivider";
+import BookShowcase from "@/components/book/BookShowcase";
+import { PodiumBooks } from "@/components/hero/PodiumBooks";
+import { AuthorOfTheYearCard } from "@/components/spotlight/AuthorOfTheYearCard";
+import { KoreanLiteratureCard } from "@/components/spotlight/KoreanLiteratureCard";
+import type { Book } from "@/types/Book";
 
-interface Book {
-  title: string;
-  author: string;
-  image: string;
-}
+const books: [Book, Book, Book] = [
+  { title: "Livro Esquerda", author: "Autor 1", image: "/livros/livro1.jpg" },
+  { title: "Livro Centro", author: "Autor 2", image: "/livros/livro2.jpg" },
+  { title: "Livro Direita", author: "Autor 3", image: "/livros/livro3.jpg" },
+];
 
-interface PodiumBooksProps {
-  books: [Book, Book, Book];
-}
-
-export const PodiumBooks = ({ books }: PodiumBooksProps) => {
-  const [leftBook, centerBook, rightBook] = books;
-
+export default function Home() {
   return (
-    <div className="relative flex items-end justify-center h-[360px] w-[550px]">
-      {/* Livro esquerdo */}
-      <img
-        src={leftBook.image}
-        alt={leftBook.title}
-        width={195.88}
-        height={281.43}
-        className="absolute left-0 bottom-0 rotate-[-25deg] rounded-[20px] shadow-md"
-      />
+    <>
+      <Header />
+      <HeroSection />
 
-      {/* Livro central */}
-      <img
-        src={centerBook.image}
-        alt={centerBook.title}
-        width={231}
-        height={327}
-        className="z-10 rounded-[20px] shadow-lg"
-      />
-
-      {/* Livro direito */}
-      <img
-        src={rightBook.image}
-        alt={rightBook.title}
-        width={195.88}
-        height={281.43}
-        className="absolute right-0 bottom-0 rotate-[25deg] rounded-[20px] shadow-md"
-      />
-
-      {/* Título do gênero */}
-      <div className="absolute -bottom-10 text-center w-full">
-        <h3 className="text-xl font-cursive text-orange-500">Dark Romance</h3>
+      <div className="mt-20 flex items-end justify-center gap-6">
+        <PodiumBooks books={books} />
+        <AuthorOfTheYearCard />
+        <KoreanLiteratureCard />
       </div>
-    </div>
-  );
-};
 
+      <BookShelfDivider />
+      <BookShowcase />
+    </>
+  );
+}
