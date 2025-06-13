@@ -16,24 +16,23 @@ const books: [Book, Book, Book] = [
 
 export default function Home() {
   return (
-    <main className="relative flex min-h-screen max-w-[1920px] mx-auto">
-      {/* Esquerda: Hero fixado no topo conforme 153px */}
-      <div className="absolute top-[153px] left-[16px] w-[300px]">
+    <main className="relative min-h-screen max-w-[1920px] mx-auto px-12">
+      {/* HeroSection à esquerda */}
+      <div className="absolute top-[180px] left-[100px] w-[300px] z-10">
         <HeroSection />
       </div>
 
-      {/* Direita: Cards agrupados com escala reduzida e alinhamento ajustado */}
-      <div className="absolute top-[153px] left-[656px] scale-[.85] origin-top-left flex">
+      {/* Cards à direita, mais para baixo e direita com escala reduzida */}
+        <div className="absolute top-[230px] left-[740px] scale-[.85] origin-top-left flex gap-[62px] z-0">
         <div className="mr-[50px]">
           <PodiumBooks books={books} />
         </div>
-        <div className="mr-[62px]">
-          <AuthorOfTheYearCard />
-        </div>
-        <div className="mr-[0px]">
-          <KoreanLiteratureCard />
-        </div>
+        <AuthorOfTheYearCard />
+        <KoreanLiteratureCard />
       </div>
+
+      {/* Espaço reservado abaixo para garantir que elementos abaixo apareçam */}
+      <div className="pt-[700px]">{/* Aqui entram os botões e ícones */}</div>
     </main>
   );
 }
