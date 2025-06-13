@@ -11,7 +11,7 @@ export const AuthorOfTheYearCard = () => {
 
       {/* Imagem encostando no "chão" */}
       <img
-        src="/autor.png"
+        src="/livros/autor.jpg"
         alt="Autor do Ano"
         width={180}
         height={180}
