@@ -1,37 +1,23 @@
 import HeroSection from "@/components/hero/HeroSection";
 import TopSection from "@/components/home/TopSection";
-
-interface Book {
-  title: string;
-  author: string;
-  image: string;
-}
+import type { Book } from "@/types/Book";
 
 const books: [Book, Book, Book] = [
-  { title: "Livro Esquerda", author: "Autor 1", image: "/images/left-book.jpg" },
-  { title: "Livro Centro", author: "Autor 2", image: "/images/center-book.jpg" },
-  { title: "Livro Direita", author: "Autor 3", image: "/images/right-book.jpg" },
+  { title: "Livro Esquerda", author: "Autor 1", image: "/livros/livro1.png" },
+  { title: "Livro Centro", author: "Autor 2", image: "/livros/livro2.png" },
+  { title: "Livro Direita", author: "Autor 3", image: "/livros/livro3.png" },
 ];
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-bookstore-bg flex justify-start px-10 pt-[139px] max-w-[1920px] mx-auto">
-      {/* Lado esquerdo: Hero (título + barra de busca) */}
-      <div className="flex flex-col max-w-xs mr-20">
+    <main className="flex items-start justify-center min-h-screen max-w-[1920px] mx-auto px-12 pt-32 gap-20">
+      {/* Lado esquerdo: Título e barra de pesquisa */}
+      <div className="flex flex-col w-[300px] mt-8">
         <HeroSection />
       </div>
 
-      {/* Lado direito: Títulos e cards */}
-      <section className="flex flex-col items-start max-w-[1200px]">
-        <div className="mb-4">
-          <h1 className="font-cursive text-5xl font-bold text-bookstore-text-dark leading-tight">
-            Novos & Tendências
-          </h1>
-          <p className="text-lg text-bookstore-text-gray italic font-elegant mt-1">
-            Explore novos mundos de autores
-          </p>
-        </div>
-
+      {/* Lado direito: Cards de pódio, autor e literatura */}
+      <section className="flex-1">
         <TopSection books={books} />
       </section>
     </main>

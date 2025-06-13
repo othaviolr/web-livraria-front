@@ -6,6 +6,7 @@ import { PodiumBooks } from "@/components/hero/PodiumBooks";
 import { AuthorOfTheYearCard } from "@/components/spotlight/AuthorOfTheYearCard";
 import { KoreanLiteratureCard } from "@/components/spotlight/KoreanLiteratureCard";
 import type { Book } from "@/types/Book";
+import TopSection from "@/components/home/TopSection";
 
 const books: [Book, Book, Book] = [
   { title: "Livro Esquerda", author: "Autor 1", image: "/livros/livro1.jpg" },
@@ -15,18 +16,16 @@ const books: [Book, Book, Book] = [
 
 export default function Home() {
   return (
-    <>
-      <Header />
-      <HeroSection />
-
-      <div className="mt-20 flex items-end justify-center gap-6">
-        <PodiumBooks books={books} />
-        <AuthorOfTheYearCard />
-        <KoreanLiteratureCard />
+    <main className="flex min-h-screen max-w-[1920px] mx-auto">
+      {/* Lado esquerdo: título e busca */}
+      <div className="ml-[153px] mt-[284px] w-[300px]">
+        <HeroSection />
       </div>
 
-      <BookShelfDivider />
-      <BookShowcase />
-    </>
+      {/* Lado direito: cards */}
+      <section className="flex-1">
+        <TopSection books={books} />
+      </section>
+    </main>
   );
 }
