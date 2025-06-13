@@ -16,16 +16,24 @@ const books: [Book, Book, Book] = [
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen max-w-[1920px] mx-auto">
-      {/* Lado esquerdo: título e busca */}
-      <div className="ml-[153px] mt-[284px] w-[300px]">
+    <main className="relative flex min-h-screen max-w-[1920px] mx-auto">
+      {/* Esquerda: Hero fixado no topo conforme 153px */}
+      <div className="absolute top-[153px] left-[16px] w-[300px]">
         <HeroSection />
       </div>
 
-      {/* Lado direito: cards */}
-      <section className="flex-1">
-        <TopSection books={books} />
-      </section>
+      {/* Direita: Cards agrupados com escala reduzida e alinhamento ajustado */}
+      <div className="absolute top-[153px] left-[656px] scale-[.85] origin-top-left flex">
+        <div className="mr-[50px]">
+          <PodiumBooks books={books} />
+        </div>
+        <div className="mr-[62px]">
+          <AuthorOfTheYearCard />
+        </div>
+        <div className="mr-[0px]">
+          <KoreanLiteratureCard />
+        </div>
+      </div>
     </main>
   );
 }
