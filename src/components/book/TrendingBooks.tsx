@@ -3,22 +3,22 @@ import { Star } from "lucide-react";
 export default function TrendingBooks() {
   const books = [
     {
-      title: "A Promessa de um Amor",
-      author: "Isabela Freitas",
+      title: "Saboroso Cadáver",
+      author: "Agustina Bazterrica",
       image: "/livros/novos1.jpg",
       rating: 4,
     },
     {
-      title: "O Segredo da Montanha",
-      author: "Lucas Rocha",
+      title: "Se você pudesse ver o sol",
+      author: "Ann Liang",
       image: "/livros/novos2.jpg",
-      rating: 5,
+      rating: 4,
     },
     {
-      title: "Sombras da Memória",
-      author: "Clara Alves",
+      title: "O Colecionador",
+      author: "John Fowles",
       image: "/livros/novos3.jpg",
-      rating: 3,
+      rating: 5,
     },
   ];
 

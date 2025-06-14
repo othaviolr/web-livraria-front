@@ -12,9 +12,7 @@ export function HomeHighlights({ books }: HomeHighlightsProps) {
     <section className="relative w-full h-[600px] flex">
       {/* Lado esquerdo: Título e barra de pesquisa */}
       <div className="absolute top-[153px] left-0 px-16">
-        <h2 className="text-4xl text-orange-600 font-bold italic">
-          Novos & Tendências
-        </h2>
+        <h2 className="text-4xl font-luxurious">Novos & Tendências</h2>
         <p className="text-gray-500 mt-1 mb-4">
           Explore novos mundos de autores
         </p>
