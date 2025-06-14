@@ -1,7 +1,5 @@
-export default function BookShelfDivider() {
+export default function BookShelf() {
   return (
-    <div className="w-full flex justify-center my-12">
-      <div className="w-[80%] h-2 bg-orange-500 rounded-full" />
-    </div>
+    <div className="relative w-full h-[40px] bg-[#F3EDE4] shadow-[0_4px_6px_rgba(0,0,0,0.1)] rounded-t-md z-10" />
   );
 }
