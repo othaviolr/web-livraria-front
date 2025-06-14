@@ -23,7 +23,7 @@ export default function Home() {
       </div>
 
       {/* Cards à direita */}
-      <div className="absolute top-[230px] left-[740px] scale-[.85] origin-top-left flex gap-[62px] z-0">
+      <div className="absolute top-[190px] left-[740px] scale-[.80] origin-top-left flex gap-[120px] z-0">
         <div className="mr-[50px]">
           <PodiumBooks books={books} />
         </div>

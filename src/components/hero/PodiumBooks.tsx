@@ -15,7 +15,7 @@ export const PodiumBooks = ({ books }: PodiumBooksProps) => {
         alt={leftBook.title}
         width={195.88}
         height={281.43}
-        className="absolute left-0 bottom-0 rotate-[-25deg] rounded-[20px] shadow-md"
+        className="absolute left-0 bottom-0 rotate-[-25deg] rounded-[25px] shadow-md"
       />
 
       {/* Livro central */}
@@ -24,7 +24,7 @@ export const PodiumBooks = ({ books }: PodiumBooksProps) => {
         alt={centerBook.title}
         width={231}
         height={327}
-        className="z-10 rounded-[20px] shadow-lg"
+        className="z-10 rounded-[25px] shadow-lg"
       />
 
       {/* Livro direito */}
@@ -33,12 +33,12 @@ export const PodiumBooks = ({ books }: PodiumBooksProps) => {
         alt={rightBook.title}
         width={195.88}
         height={281.43}
-        className="absolute right-0 bottom-0 rotate-[25deg] rounded-[20px] shadow-md"
+        className="absolute right-0 bottom-0 rotate-[25deg] rounded-[25px] shadow-md"
       />
 
       {/* Título do gênero */}
       <div className="absolute -bottom-10 text-center w-full">
-        <h3 className="text-xl font-cursive text-orange-500">Dark Romance</h3>
+        <h2 className="text-xl font-cursive text-black-500">Dark Romance</h2>
       </div>
     </div>
   );

@@ -7,29 +7,42 @@ export const KoreanLiteratureCard = () => {
         <p className="text-sm text-gray-600 mt-1">Descubra obras incríveis</p>
       </div>
 
-      {/* Livros no fundo */}
-      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 flex items-end gap-[-10px]">
-        <img
-          src="/livros/k1.jpg"
-          alt="Livro K1"
-          width={140}
-          height={200}
-          className="rounded-md z-30"
-        />
-        <img
-          src="/livros/k2.jpg"
-          alt="Livro K2"
-          width={120}
-          height={180}
-          className="rounded-md z-20"
-        />
-        <img
-          src="/livros/k3.jpg"
-          alt="Livro K3"
-          width={100}
-          height={160}
-          className="rounded-md z-10"
-        />
+      {/* Container dos livros - versão corrigida */}
+      <div className="absolute bottom-0 left-0 right-0 flex justify-center items-end">
+        <div className="flex relative h-[200px] items-end">
+          {/* Livro 1 */}
+          <div className="relative z-30" style={{ marginRight: '-20px' }}>
+            <img
+              src="/livros/k1.jpg"
+              alt="Livro K1"
+              width={140}
+              height={200}
+              className="rounded-md shadow-md"
+            />
+          </div>
+          
+          {/* Livro 2 */}
+          <div className="relative z-20" style={{ marginRight: '-20px' }}>
+            <img
+              src="/livros/k2.jpg"
+              alt="Livro K2"
+              width={120}
+              height={180}
+              className="rounded-md shadow-md"
+            />
+          </div>
+          
+          {/* Livro 3 */}
+          <div className="relative z-10">
+            <img
+              src="/livros/k3.jpg"
+              alt="Livro K3"
+              width={100}
+              height={160}
+              className="rounded-md shadow-md border-2 border-transparent"
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
