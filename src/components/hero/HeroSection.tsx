@@ -1,12 +1,15 @@
+import { Search } from "lucide-react";
+
 export default function HeroSection() {
   return (
     <section>
-      <h2 className="text-4xl font-luxurious">Novos & Tendências</h2>
+      <h2 className="text-6xl font-luxurious">Novos & Tendências</h2>
       <p className="text-gray-500 mt-1 mb-4">Explore novos mundos de autores</p>
-      {/* barra ajustada */}
-      <div className="flex items-center w-full bg-white shadow-md rounded-full px-4 py-2 mt-2 max-w-[280px]">
+
+      <div className="relative w-full max-w-[280px] mt-2">
+        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none" />
         <input
-          className="flex-1 outline-none bg-transparent text-gray-700"
+          className="w-full pl-12 pr-4 py-2 rounded-full border border-black/20 bg-white/60 text-gray-700 placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#DAAA63] transition"
           type="text"
           placeholder="Livros, autores e editoras"
         />

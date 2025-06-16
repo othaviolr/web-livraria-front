@@ -1,7 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Heart, User, Menu } from "lucide-react";
+import {
+  Heart,
+  Menu,
+  BookOpen,
+  TrendingUp,
+  Bookmark
+} from "lucide-react";
 
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -17,51 +23,65 @@ export default function Header() {
         Livraria do Tavin
       </div>
 
-      {/* Botões de navegação */}
+      {/* Navegação */}
       <nav className="flex gap-4">
-        <button 
-          className="bg-[#DAAA63] text-white border border-black border-opacity-50 px-4 py-2 rounded-full text-sm shadow hover:bg-[#DAAA63]/90 transition-colors"
+        <button
+          className="flex items-center gap-2 bg-[#DAAA63] text-black border border-black border-opacity-50 px-6 py-1.5 rounded-full text-sm shadow hover:bg-[#DAAA63]/90 transition-colors"
           aria-label="Navegar para Livros"
         >
+          <BookOpen className="w-4 h-4" />
           Livros
         </button>
-        <button 
-          className="bg-white text-gray-900 border border-black border-opacity-50 px-4 py-2 rounded-full text-sm shadow hover:bg-gray-50 transition-colors"
+        <button
+          className="flex items-center gap-2 bg-white text-gray-900 border border-black border-opacity-50 px-6 py-1.5 rounded-full text-sm shadow hover:bg-gray-50 transition-colors"
           aria-label="Navegar para Ranking"
         >
+          <TrendingUp className="w-4 h-4" />
           Ranking
         </button>
       </nav>
 
-      {/* Login / Ícones */}
-      <div className="flex items-center gap-4">
-        {!isLoggedIn ? (
-          <button
-            onClick={handleLogin}
-            className="flex items-center gap-2 text-sm text-gray-700 border border-gray-300 px-4 py-2 rounded-full hover:bg-gray-100 transition-colors"
-            aria-label="Entrar com Google"
-          >
-            <img
-              src="/icons/google.svg"
-              alt="Google"
-              className="w-4 h-4"
-            />
-            Entrar com Google
-          </button>
-        ) : (
-          <div className="flex items-center gap-4">
-            <button aria-label="Favoritos">
-              <Heart className="w-5 h-5 text-gray-700 hover:text-orange-600 cursor-pointer transition-colors" />
-            </button>
-            <button aria-label="Perfil">
-              <User className="w-5 h-5 text-gray-700 hover:text-orange-600 cursor-pointer transition-colors" />
-            </button>
-            <button aria-label="Menu">
-              <Menu className="w-5 h-5 text-gray-700 hover:text-orange-600 cursor-pointer transition-colors" />
-            </button>
-          </div>
-        )}
-      </div>
+    {/* Login / Ícones */}
+<div className="flex items-center gap-4">
+  {!isLoggedIn ? (
+    <button
+      onClick={handleLogin}
+      className="flex items-center gap-2 text-sm text-gray-700 border border-gray-300 px-4 py-2 rounded-full hover:bg-[#DAAA63] hover:bg-opacity-20 transition-colors"
+      aria-label="Entrar com Google"
+    >
+      <img
+        src="/icons/google.svg"
+        alt="Google"
+        className="w-4 h-4"
+      />
+      Entrar com Google
+    </button>
+  ) : (
+    <div className="flex items-center gap-5"> {/* Aumentei o gap para 5 */}
+      {/* Favoritos */}
+      <button aria-label="Favoritos">
+        <Bookmark className="w-6 h-6 text-black-700 hover:text-[#DAAA63] transition-colors" />
+      </button>
+
+      {/* Lista de desejos */}
+      <button aria-label="Lista de Desejos">
+        <Heart className="w-6 h-6 text-black-700 hover:text-[#DAAA63] transition-colors" />
+      </button>
+
+      {/* Avatar do usuário logado */}
+      <img
+        src="/public/livros/jk.jpg"
+        alt="Usuário"
+        className="w-9 h-9 rounded-full object-cover border border-gray-300"
+      />
+
+      {/* Menu (opcional) */}
+      <button aria-label="Menu">
+        <Menu className="w-6 h-6 text-black-700 hover:text-[#DAAA63] transition-colors" />
+      </button>
+    </div>
+  )}
+</div>
     </header>
   );
 }

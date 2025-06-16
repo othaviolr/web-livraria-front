@@ -6,7 +6,7 @@ export const AuthorOfTheYearCard = () => {
         <h3 className="text-xl font-cursive text-black leading-tight">
           Noah Sebastian<br />Collection
         </h3>
-        <p className="text-sm text-black/70 mt-1">79 livros</p>
+        <p className="text-sm text-black/70 mt-2">79 livros</p>
       </div>
 
       {/* Imagem do autor no fundo */}

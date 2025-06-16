@@ -38,7 +38,7 @@ export const PodiumBooks = ({ books }: PodiumBooksProps) => {
 
       {/* Título do gênero */}
       <div className="absolute -bottom-10 text-center w-full">
-        <h2 className="text-xl font-cursive text-black-500">Dark Romance</h2>
+        <h2 className="text-3xl font-luxurious text-black-500">Dark Romance</h2>
       </div>
     </div>
   );
