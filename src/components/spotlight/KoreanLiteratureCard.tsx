@@ -1,6 +1,6 @@
 export const KoreanLiteratureCard = () => {
   return (
-    <div className="relative w-[268px] h-[372px] bg-[#D5D4D2] rounded-2xl shadow-md px-4 pt-4 pb-0 overflow-hidden mt-[45px]">
+    <div className="relative w-[268px] h-[372px] bg-[#D5D4D2] rounded-[30px] shadow-md px-4 pt-4 pb-0 overflow-hidden mt-[45px]">
       {/* Título e descrição */}
       <div className="text-center">
         <h3 className="text-[20px] font-montserrat text-black leading-tight">
