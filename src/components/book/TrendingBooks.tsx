@@ -26,16 +26,14 @@ export default function TrendingBooks() {
     <div className="flex justify-between items-start px-32 mt-[60px] relative z-20">
       {books.map((book, index) => (
         <div key={index} className="flex flex-col items-center">
-          {/* Capa + Info ao lado */}
           <div className="flex items-center gap-6">
             <img
               src={book.image}
               alt={book.title}
-              className="w-[160px] h-[240px] object-cover rounded-[20px] shadow-md"
+              className="w-[160px] h-[240px] object-cover rounded-[20px] shadow-md hover:shadow-lg transition-shadow"
             />
 
             <div className="flex flex-col justify-center">
-              {/* Estrelas */}
               <div className="flex items-center mb-2">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star
@@ -48,14 +46,17 @@ export default function TrendingBooks() {
                 ))}
               </div>
 
-              {/* Título e autor */}
               <h3 className="text-xl font-semibold text-gray-800">{book.title}</h3>
               <p className="text-md text-gray-500 mt-1">{book.author}</p>
 
-              {/* Botão mais compacto horizontalmente */}
+              {/* Botão sutil e compacto */}
               <button 
-                className="mt-4 text-black px-4 py-2 rounded-full hover:bg-[#c29955] transition text-base font-medium w-fit"
-                style={{ backgroundColor: '#DAAA63' }}
+                className="mt-4 px-4 py-1.5 rounded-full 
+                          bg-white text-[#DAAA63] border border-[#DAAA63] 
+                          hover:bg-[#DAAA63] hover:text-white
+                          transition-colors duration-200
+                          text-sm font-medium w-fit
+                          shadow-sm hover:shadow-md"
               >
                 Comprar
               </button>

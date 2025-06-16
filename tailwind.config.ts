@@ -13,6 +13,7 @@ const config: Config = {
         luxurious: ["Luxurious Roman", "cursive"],
         display: ["Playfair Display", "serif"],
         script: ["Dancing Script", "cursive"],
+        montserrat: ['Montserrat', 'sans-serif'],
       },
       colors: {
         background: "hsl(var(--background))",

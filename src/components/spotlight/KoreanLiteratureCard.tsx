@@ -1,22 +1,25 @@
 export const KoreanLiteratureCard = () => {
   return (
-    <div className="relative w-[268px] h-[372px] bg-[#D5D4D2] rounded-2xl shadow-md px-4 pt-4 pb-2 overflow-hidden">
+    <div className="relative w-[268px] h-[372px] bg-[#D5D4D2] rounded-2xl shadow-md px-4 pt-4 pb-0 overflow-hidden mt-[45px]">
       {/* Título e descrição */}
       <div className="text-center">
-        <h3 className="text-xl font-cursive text-black">Literatura Coreana</h3>
-        <p className="text-sm text-gray-600 mt-1">Descubra obras incríveis</p>
+        <h3 className="text-[20px] font-montserrat text-black leading-tight">
+          Literatura Coreana
+        </h3>
+        <p className="text-[20px] font-montserrat text-gray-600/80 mt-2">
+          Descubra obras incríveis
+        </p>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 flex justify-center items-end">
+      {/* Container dos livros - ajuste fino no posicionamento */}
+      <div className="absolute bottom-[-30px] left-0 right-0 flex justify-center">
         <div className="flex relative h-[200px] items-end">
           {/* Livro 1 */}
           <div className="relative z-30" style={{ marginRight: '-20px' }}>
             <img
               src="/livros/k3.jpg"
               alt="Livro K1"
-              width={140}
-              height={200}
-              className="rounded-md shadow-md"
+              className="w-[140px] h-[200px] rounded-md shadow-md object-cover"
             />
           </div>
           
@@ -25,9 +28,7 @@ export const KoreanLiteratureCard = () => {
             <img
               src="/livros/k1.jpg"
               alt="Livro K2"
-              width={120}
-              height={180}
-              className="rounded-md shadow-md"
+              className="w-[120px] h-[180px] rounded-md shadow-md object-cover"
             />
           </div>
           
@@ -36,9 +37,7 @@ export const KoreanLiteratureCard = () => {
             <img
               src="/livros/k2.jpg"
               alt="Livro K3"
-              width={100}
-              height={160}
-              className="rounded-md shadow-md border-2 border-transparent"
+              className="w-[100px] h-[160px] rounded-md shadow-md object-cover"
             />
           </div>
         </div>
