@@ -7,16 +7,16 @@ export const AuthorOfTheYearCard = () => {
     </h2>
   </div>
 
-      {/* Card do autor */}
-      <div className="relative w-[294px] h-[417px] bg-[#DAAA63] rounded-[30px] shadow-md px-4 pt-4 pb-0 overflow-hidden">
-        <div className="text-center mt-16">
-          <h3 className="text-[20px] font-montserrat text-black leading-tight">
-            Noah Sebastian<br />Collection
-          </h3>
-          <p className="text-[20px] font-montserrat text-black/50 mt-2">
-            79 livros
-          </p>
-        </div>
+{/* Card do autor */}
+<div className="relative w-[294px] h-[417px] bg-[#DAAA63] rounded-[30px] shadow-md px-4 pt-4 pb-0 overflow-hidden">
+  <div className="text-center mt-0"> {/* Reduzi de mt-16 para mt-8 */}
+    <h3 className="text-[20px] font-montserrat text-black leading-tight">
+      Noah Sebastian<br />Collection
+    </h3>
+    <p className="text-[20px] font-montserrat text-black/50 mt-2">
+      79 livros
+    </p>
+  </div>
 
         <img
           src="/livros/autor.jpg"

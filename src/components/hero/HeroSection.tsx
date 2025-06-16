@@ -3,7 +3,7 @@ import { Search } from "lucide-react";
 export default function HeroSection() {
   return (
     <section>
-      <h2 className="text-6xl font-luxurious">Novos & Tendências</h2>
+      <h1 className="text-6xl font-luxurious">Novos & Tendências</h1>
       <p className="text-gray-500 mt-1 mb-4">Explore novos mundos de autores</p>
 
       <div className="relative w-full max-w-[280px] mt-2">
