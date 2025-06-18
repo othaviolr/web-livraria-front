@@ -1,4 +1,4 @@
-# Ignora tudo
+# Ignora TUDO na raiz, exceto src e .gitignore
 /*
 !/src/
 !.gitignore
