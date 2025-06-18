@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 
 const exploreOptions = [
@@ -16,7 +17,6 @@ export default function Livros() {
   const [activeTab, setActiveTab] = useState<"livros" | "autores" | "editoras">("livros");
   const [showExplore, setShowExplore] = useState(false);
   const [search, setSearch] = useState("");
-
   const exploreRef = useRef<HTMLDivElement>(null);
 
   // Fecha o menu "Explorar" ao clicar fora
@@ -80,7 +80,7 @@ export default function Livros() {
                 {exploreOptions.map((opt) => (
                   <button
                     key={opt}
-                    className="w-full text-left px-4 py-2 transition-all rounded-md cursor-pointer hover:bg-[#DAAA63]/10 hover:text-[#DAAA63] font-medium"
+                    className="w-full text-left px-4 py-2 rounded-md transition-all cursor-pointer hover:bg-[#DAAA63]/10 hover:text-[#DAAA63] font-medium"
                     onClick={() => {
                       setShowExplore(false);
                       console.log("Selecionou:", opt);
@@ -117,20 +117,24 @@ export default function Livros() {
         {activeTab === "livros" && (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="flex flex-col items-center">
-                <img
-                  src={`/livros/novos${(i % 3) + 1}.jpg`}
-                  alt="Livro"
-                  className="w-[160px] h-[240px] object-cover rounded-[20px] shadow-md hover:shadow-lg transition-shadow"
-                />
+              <Link key={i} to={`/livros/${i}`}>
+                <div className="flex flex-col items-center cursor-pointer group">
+                  <div className="overflow-hidden rounded-[20px] shadow-md">
+                    <img
+                      src={`/livros/novos${(i % 3) + 1}.jpg`}
+                      alt="Livro"
+                      className="w-[160px] h-[240px] object-cover rounded-[20px] transition-transform duration-300 ease-in-out group-hover:scale-105"
+                    />
+                  </div>
 
-                <div className="flex flex-col items-center mt-3">
-                  <h3 className="text-base font-semibold text-gray-800 text-center">
-                    Título do Livro
-                  </h3>
-                  <p className="text-sm text-gray-500 mt-1">Autor Exemplo</p>
+                  <div className="flex flex-col items-center mt-3">
+                    <h3 className="text-base font-semibold text-gray-800 text-center">
+                      Título do Livro
+                    </h3>
+                    <p className="text-sm text-gray-500 mt-1">Autor Exemplo</p>
+                  </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         )}
