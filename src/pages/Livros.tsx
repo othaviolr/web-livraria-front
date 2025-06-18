@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ChevronDown } from "lucide-react";
 
 const exploreOptions = [
@@ -16,6 +16,33 @@ export default function Livros() {
   const [activeTab, setActiveTab] = useState<"livros" | "autores" | "editoras">("livros");
   const [showExplore, setShowExplore] = useState(false);
   const [search, setSearch] = useState("");
+
+  const exploreRef = useRef<HTMLDivElement>(null);
+
+  // Fecha o menu "Explorar" ao clicar fora
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        exploreRef.current &&
+        !exploreRef.current.contains(event.target as Node)
+      ) {
+        setShowExplore(false);
+      }
+    }
+
+    if (showExplore) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showExplore]);
+
+  const baseBtnClasses =
+    "flex items-center gap-2 border border-black border-opacity-40 px-6 py-1.5 rounded-full text-sm font-semibold transition-shadow duration-300 ease-in-out";
 
   return (
     <div className="px-8 md:px-32 py-10 max-w-[1440px] mx-auto">
@@ -35,15 +62,15 @@ export default function Livros() {
         <div className="flex gap-2">
           <button
             onClick={() => console.log("Pesquisar por:", search)}
-            className="px-4 py-2 rounded-full bg-[#DAAA63] text-white font-medium shadow hover:shadow-md transition-all"
+            className="px-5 py-2 rounded-full bg-[#DAAA63] text-white font-semibold shadow-md border border-black/10 hover:bg-[#DAAA63]/90 hover:border-black/20 transition-all duration-150 ease-linear active:bg-[#DAAA63]/80 active:border-black/30"
           >
             Pesquisar
           </button>
 
-          <div className="relative">
+          <div className="relative" ref={exploreRef}>
             <button
               onClick={() => setShowExplore((prev) => !prev)}
-              className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-full bg-white shadow-sm hover:bg-gray-100 transition-all text-gray-700"
+              className={`${baseBtnClasses} bg-white text-gray-900 hover:shadow-lg`}
             >
               Explorar <ChevronDown size={16} />
             </button>
@@ -53,7 +80,7 @@ export default function Livros() {
                 {exploreOptions.map((opt) => (
                   <button
                     key={opt}
-                    className="w-full text-left px-4 py-2 hover:bg-gray-100 transition-all rounded-md"
+                    className="w-full text-left px-4 py-2 transition-all rounded-md cursor-pointer hover:bg-[#DAAA63]/10 hover:text-[#DAAA63] font-medium"
                     onClick={() => {
                       setShowExplore(false);
                       console.log("Selecionou:", opt);
@@ -74,10 +101,10 @@ export default function Livros() {
           <button
             key={tab}
             onClick={() => setActiveTab(tab as any)}
-            className={`px-5 py-2 rounded-full font-medium transition-all border ${
+            className={`${baseBtnClasses} ${
               activeTab === tab
-                ? "bg-[#DAAA63] text-white border-[#DAAA63] shadow-md"
-                : "bg-white text-[#DAAA63] border-[#DAAA63] hover:bg-[#DAAA63] hover:text-white"
+                ? "bg-[#DAAA63] text-black shadow-md"
+                : "bg-white text-gray-900 hover:shadow-md"
             }`}
           >
             {tab.charAt(0).toUpperCase() + tab.slice(1)}
