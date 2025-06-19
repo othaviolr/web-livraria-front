@@ -13,13 +13,31 @@ const exploreOptions = [
   "Por Ano",
 ];
 
+const livros = [
+  { id: 1, titulo: "A Sombra do Vento", autor: "Carlos Ruiz Zafón", imagem: "/livros/incipit1.jpg" },
+  { id: 2, titulo: "1984", autor: "George Orwell", imagem: "/livros/oblivio2.jpg" },
+  { id: 3, titulo: "Dom Casmurro", autor: "Machado de Assis", imagem: "/livros/corrupt.jpg" },
+  { id: 4, titulo: "O Hobbit", autor: "J.R.R. Tolkien", imagem: "/livros/hideaway.jpg" },
+  { id: 5, titulo: "Ensaio Sobre a Cegueira", autor: "José Saramago", imagem: "/livros/killswith.jpg" },
+  { id: 6, titulo: "Capitães da Areia", autor: "Jorge Amado", imagem: "/livros/loveinthedark.jpg" },
+  { id: 7, titulo: "Harry Potter", autor: "J.K. Rowling", imagem: "/livros/AssombrandoAdeline.jpg" },
+  { id: 8, titulo: "O Senhor dos Anéis", autor: "J.R.R. Tolkien", imagem: "/livros/perseguindoadeline.jpg" },
+  { id: 9, titulo: "It: A Coisa", autor: "Stephen King", imagem: "/livros/scarlet.png" },
+  { id: 10, titulo: "A Revolução dos Bichos", autor: "George Orwell", imagem: "/livros/Twistedbeauty.jpg" },
+  { id: 11, titulo: "Memórias Póstumas", autor: "Machado de Assis", imagem: "/livros/Hauntedhearts.jpg" },
+  { id: 12, titulo: "O Pequeno Príncipe", autor: "Antoine de Saint-Exupéry", imagem: "/livros/punk.jpg" },
+  { id: 13, titulo: "O Código Da Vinci", autor: "Dan Brown", imagem: "/livros/Credence.jpg" },
+  { id: 14, titulo: "Orgulho e Preconceito", autor: "Jane Austen", imagem: "/livros/knox nigth reapers.png" },
+  { id: 15, titulo: "A Menina que Roubava Livros", autor: "Markus Zusak", imagem: "/livros/storm.jpg" },
+  { id: 16, titulo: "Verity", autor: "Colleen Hoover", imagem: "/livros/reaper.jpg" },
+];
+
 export default function Livros() {
   const [activeTab, setActiveTab] = useState<"livros" | "autores" | "editoras">("livros");
   const [showExplore, setShowExplore] = useState(false);
   const [search, setSearch] = useState("");
   const exploreRef = useRef<HTMLDivElement>(null);
 
-  // Fecha o menu "Explorar" ao clicar fora
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -46,10 +64,8 @@ export default function Livros() {
 
   return (
     <div className="px-8 md:px-32 py-10 max-w-[1440px] mx-auto">
-      {/* Título */}
       <h1 className="text-3xl font-bold text-gray-800 mb-8">Livros em destaque</h1>
 
-      {/* Barra de Pesquisa, Pesquisar e Explorar */}
       <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
         <input
           type="text"
@@ -95,7 +111,6 @@ export default function Livros() {
         </div>
       </div>
 
-      {/* Tabs */}
       <div className="mt-10 flex gap-4">
         {["livros", "autores", "editoras"].map((tab) => (
           <button
@@ -112,26 +127,23 @@ export default function Livros() {
         ))}
       </div>
 
-      {/* Conteúdo Dinâmico */}
       <div className="mt-10">
         {activeTab === "livros" && (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <Link key={i} to={`/livros/${i}`}>
+            {livros.map((livro) => (
+              <Link key={livro.id} to={`/livros/${livro.id}`}>
                 <div className="flex flex-col items-center cursor-pointer group">
                   <div className="overflow-hidden rounded-[20px] shadow-md">
                     <img
-                      src={`/livros/novos${(i % 3) + 1}.jpg`}
-                      alt="Livro"
+                      src={livro.imagem}
+                      alt={livro.titulo}
                       className="w-[160px] h-[240px] object-cover rounded-[20px] transition-transform duration-300 ease-in-out group-hover:scale-105"
                     />
                   </div>
 
-                  <div className="flex flex-col items-center mt-3">
-                    <h3 className="text-base font-semibold text-gray-800 text-center">
-                      Título do Livro
-                    </h3>
-                    <p className="text-sm text-gray-500 mt-1">Autor Exemplo</p>
+                  <div className="flex flex-col items-center mt-3 text-center">
+                    <h3 className="text-base font-semibold text-gray-800">{livro.titulo}</h3>
+                    <p className="text-sm text-gray-500 mt-1">{livro.autor}</p>
                   </div>
                 </div>
               </Link>
