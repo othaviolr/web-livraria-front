@@ -10,11 +10,12 @@ import {
   Layers,
   ArrowLeft,
 } from "lucide-react";
-import { obterLivroPorId } from "@/services/livrosService";
+import { obterLivroPorId, listarLivros } from "@/services/livrosService";
 
 export default function LivroDetalhe() {
   const { id } = useParams<{ id: string }>();
   const [livro, setLivro] = useState<any>(null);
+  const [todosLivros, setTodosLivros] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [exibirMais, setExibirMais] = useState(false);
 
@@ -22,10 +23,14 @@ export default function LivroDetalhe() {
   const [abaAtiva, setAbaAtiva] = useState("Sinopse");
 
   useEffect(() => {
-    async function carregarLivro() {
+    async function carregarDados() {
       try {
-        const data = await obterLivroPorId(Number(id));
-        setLivro(data);
+        setLoading(true);
+        const livroData = await obterLivroPorId(Number(id));
+        setLivro(livroData);
+
+        const livros = await listarLivros();
+        setTodosLivros(livros);
       } catch (error) {
         console.error("Erro ao buscar livro:", error);
       } finally {
@@ -33,15 +38,19 @@ export default function LivroDetalhe() {
       }
     }
 
-    carregarLivro();
+    carregarDados();
   }, [id]);
 
   if (loading) {
-    return <div className="p-10 text-center text-gray-500">Carregando livro...</div>;
+    return (
+      <div className="p-10 text-center text-gray-500">Carregando livro...</div>
+    );
   }
 
   if (!livro) {
-    return <div className="p-10 text-center text-red-500">Livro não encontrado.</div>;
+    return (
+      <div className="p-10 text-center text-red-500">Livro não encontrado.</div>
+    );
   }
 
   const paragrafoFormatado = (texto: string) => {
@@ -58,7 +67,10 @@ export default function LivroDetalhe() {
             const ehFraseDeImpacto = palavras.length <= 6;
 
             return (
-              <p key={index} className="text-justify leading-relaxed text-[16px] text-[#333]">
+              <p
+                key={index}
+                className="text-justify leading-relaxed text-[16px] text-[#333]"
+              >
                 {ehFraseDeImpacto ? <strong>{paragrafo}</strong> : paragrafo}
               </p>
             );
@@ -75,6 +87,46 @@ export default function LivroDetalhe() {
       </div>
     );
   };
+
+  const edicoes = todosLivros.filter(
+    (l) =>
+      l.id !== livro.id &&
+      l.autorId === livro.autorId &&
+      l.editoraId === livro.editoraId
+  );
+
+  const idsExcluir = new Set(edicoes.map((l) => l.id));
+  idsExcluir.add(livro.id);
+
+  const similares = todosLivros
+    .filter(
+      (l) =>
+        !idsExcluir.has(l.id) &&
+        (l.autorId === livro.autorId ||
+          l.generos.some((g: number) => livro.generos.includes(g)))
+    )
+    .slice(0, 3);
+
+  // Card component para edição/similar
+  const LivroCard = ({ livro }: { livro: any }) => (
+    <div
+      onClick={() => (window.location.href = `/livro/${livro.id}`)}
+      className="cursor-pointer bg-white rounded-lg shadow-md hover:shadow-lg transition p-4 flex gap-4 max-w-[400px]"
+    >
+      <img
+        src={livro.imagemUrl || "/livros/default.jpg"}
+        alt={livro.titulo}
+        className="w-20 h-28 object-cover rounded"
+      />
+      <div className="flex flex-col justify-between">
+        <h3 className="font-semibold text-lg text-gray-900">{livro.titulo}</h3>
+        <p className="text-sm text-gray-600 italic">{livro.autorNome}</p>
+        <p className="text-sm text-gray-500">
+          {new Date(livro.anoPublicacao).getFullYear()}
+        </p>
+      </div>
+    </div>
+  );
 
   return (
     <div className="max-w-[1200px] mx-auto p-8 flex flex-col md:flex-row gap-10">
@@ -145,15 +197,48 @@ export default function LivroDetalhe() {
           ))}
         </div>
 
-        <div className="mt-6 text-[#4b4b4b] leading-relaxed max-w-[700px] min-h-[120px]">
-          {abaAtiva === "Sinopse" ? (
-            livro.sinopse && livro.sinopse.trim() !== "" ? (
-              paragrafoFormatado(livro.sinopse)
-            ) : (
-              <p>Este livro ainda não possui sinopse cadastrada.</p>
-            )
-          ) : (
-            <p>Conteúdo da aba: {abaAtiva}</p>
+        {/* Conteúdo das abas */}
+        <div className="mt-6 text-[#4b4b4b] leading-relaxed max-w-[700px] min-h-[120px] flex flex-col gap-4">
+          {abaAtiva === "Sinopse" && (
+            <>
+              {livro.sinopse && livro.sinopse.trim() !== "" ? (
+                paragrafoFormatado(livro.sinopse)
+              ) : (
+                <p>Este livro ainda não possui sinopse cadastrada.</p>
+              )}
+            </>
+          )}
+
+          {abaAtiva === "Edições" && (
+            <>
+              {edicoes.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {edicoes.map((ed) => (
+                    <LivroCard key={ed.id} livro={ed} />
+                  ))}
+                </div>
+              ) : (
+                <p>Não foram encontradas outras edições deste livro.</p>
+              )}
+            </>
+          )}
+
+          {abaAtiva === "Similares" && (
+            <>
+              {similares.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {similares.map((sim) => (
+                    <LivroCard key={sim.id} livro={sim} />
+                  ))}
+                </div>
+              ) : (
+                <p>Não foram encontrados livros similares.</p>
+              )}
+            </>
+          )}
+
+          {abaAtiva === "Leia online (PDF)" && (
+            <p>Conteúdo da aba: Leia online (PDF) (em construção)</p>
           )}
         </div>
       </div>
