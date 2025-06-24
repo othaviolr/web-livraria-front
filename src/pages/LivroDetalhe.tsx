@@ -3,15 +3,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
-  Star,
-  Heart,
-  Bookmark,
-  Eye,
-  Users,
-  Clock,
   BookOpen,
-  Globe,
   Calendar,
+  Clock,
+  Globe,
   Layers,
   ArrowLeft,
 } from "lucide-react";
@@ -21,6 +16,7 @@ export default function LivroDetalhe() {
   const { id } = useParams<{ id: string }>();
   const [livro, setLivro] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [exibirMais, setExibirMais] = useState(false);
 
   const abas = ["Sinopse", "Edições", "Similares", "Leia online (PDF)"];
   const [abaAtiva, setAbaAtiva] = useState("Sinopse");
@@ -47,6 +43,38 @@ export default function LivroDetalhe() {
   if (!livro) {
     return <div className="p-10 text-center text-red-500">Livro não encontrado.</div>;
   }
+
+  const paragrafoFormatado = (texto: string) => {
+    const paragrafos = texto.split("\n").filter((p) => p.trim() !== "");
+    const limite = 5;
+    const mostrarTodos = exibirMais || paragrafos.length <= limite;
+
+    return (
+      <div className="flex flex-col gap-4">
+        {paragrafos
+          .slice(0, mostrarTodos ? paragrafos.length : limite)
+          .map((paragrafo, index) => {
+            const palavras = paragrafo.trim().split(" ");
+            const ehFraseDeImpacto = palavras.length <= 6;
+
+            return (
+              <p key={index} className="text-justify leading-relaxed text-[16px] text-[#333]">
+                {ehFraseDeImpacto ? <strong>{paragrafo}</strong> : paragrafo}
+              </p>
+            );
+          })}
+
+        {paragrafos.length > limite && (
+          <button
+            onClick={() => setExibirMais(!exibirMais)}
+            className="text-[#DAAA63] font-semibold mt-2 hover:underline self-start"
+          >
+            {exibirMais ? "Exibir menos" : "Leia mais"}
+          </button>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="max-w-[1200px] mx-auto p-8 flex flex-col md:flex-row gap-10">
@@ -119,7 +147,11 @@ export default function LivroDetalhe() {
 
         <div className="mt-6 text-[#4b4b4b] leading-relaxed max-w-[700px] min-h-[120px]">
           {abaAtiva === "Sinopse" ? (
-            <p>Este livro ainda não possui sinopse cadastrada.</p>
+            livro.sinopse && livro.sinopse.trim() !== "" ? (
+              paragrafoFormatado(livro.sinopse)
+            ) : (
+              <p>Este livro ainda não possui sinopse cadastrada.</p>
+            )
           ) : (
             <p>Conteúdo da aba: {abaAtiva}</p>
           )}
