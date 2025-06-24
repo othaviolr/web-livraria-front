@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
-
 import { listarLivros } from "@/services/livrosService";
 
 const exploreOptions = [
@@ -20,14 +19,20 @@ export default function Livros() {
   const [showExplore, setShowExplore] = useState(false);
   const [search, setSearch] = useState("");
   const [livros, setLivros] = useState<any[]>([]);
+  const [paginaAtual, setPaginaAtual] = useState(1);
+  const [totalPaginas, setTotalPaginas] = useState(1);
+  const livrosPorPagina = 16;
   const exploreRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(false);
 
-  async function carregarLivros(filtro?: string) {
+  async function carregarLivros(filtro?: string, pagina = 1) {
     try {
       setLoading(true);
       const data = await listarLivros(filtro);
-      setLivros(data.slice(0, 16));
+      setTotalPaginas(Math.ceil(data.length / livrosPorPagina));
+      const inicio = (pagina - 1) * livrosPorPagina;
+      const fim = inicio + livrosPorPagina;
+      setLivros(data.slice(inicio, fim));
     } catch (error) {
       console.error("Erro ao carregar livros:", error);
       setLivros([]);
@@ -37,15 +42,12 @@ export default function Livros() {
   }
 
   useEffect(() => {
-    carregarLivros();
-  }, []);
+    carregarLivros(undefined, paginaAtual);
+  }, [paginaAtual]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (
-        exploreRef.current &&
-        !exploreRef.current.contains(event.target as Node)
-      ) {
+      if (exploreRef.current && !exploreRef.current.contains(event.target as Node)) {
         setShowExplore(false);
       }
     }
@@ -62,7 +64,8 @@ export default function Livros() {
   }, [showExplore]);
 
   function pesquisar() {
-    carregarLivros(search);
+    setPaginaAtual(1);
+    carregarLivros(search, 1);
   }
 
   const baseBtnClasses =
@@ -110,7 +113,6 @@ export default function Livros() {
                     onClick={() => {
                       setShowExplore(false);
                       console.log("Selecionou:", opt);
-                      // Implementar filtro pelo exploreOptions aqui futuramente
                     }}
                   >
                     {opt}
@@ -140,30 +142,53 @@ export default function Livros() {
 
       <div className="mt-10">
         {activeTab === "livros" && (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {livros.length === 0 && !loading && (
-              <p className="col-span-full text-center text-gray-500">Nenhum livro encontrado.</p>
-            )}
-            {livros.map((livro) => (
-              <Link key={livro.id} to={`/livros/${livro.id}`}>
-                <div className="flex flex-col items-center cursor-pointer group">
-                  <div className="overflow-hidden rounded-[20px] shadow-md">
-                    <img
-                      src={livro.imagemUrl || "/livros/default.jpg"}
-                      alt={livro.titulo}
-                      className="w-[160px] h-[240px] object-cover rounded-[20px] transition-transform duration-300 ease-in-out group-hover:scale-105"
-                    />
-                  </div>
+          <>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+              {livros.length === 0 && !loading && (
+                <p className="col-span-full text-center text-gray-500">Nenhum livro encontrado.</p>
+              )}
+              {livros.map((livro) => (
+                <Link key={livro.id} to={`/livros/${livro.id}`}>
+                  <div className="flex flex-col items-center cursor-pointer group">
+                    <div className="overflow-hidden rounded-[20px] shadow-md">
+                      <img
+                        src={livro.imagemUrl || "/livros/default.jpg"}
+                        alt={livro.titulo}
+                        className="w-[160px] h-[240px] object-cover rounded-[20px] transition-transform duration-300 ease-in-out group-hover:scale-105"
+                      />
+                    </div>
 
-                  <div className="flex flex-col items-center mt-3 text-center">
-                    <h3 className="text-base font-semibold text-gray-800">{livro.titulo}</h3>
-                    <p className="text-sm text-gray-500 mt-1">{livro.autorNome}</p>
-                    <p className="text-xs text-gray-400">{livro.editoraNome}</p>
+                    <div className="flex flex-col items-center mt-3 text-center">
+                      <h3 className="text-base font-semibold text-gray-800">{livro.titulo}</h3>
+                      <p className="text-sm text-gray-500 mt-1">{livro.autorNome}</p>
+                      <p className="text-xs text-gray-400">{livro.editoraNome}</p>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            ))}
-          </div>
+                </Link>
+              ))}
+            </div>
+
+            {/* Paginação */}
+            <div className="flex justify-center mt-10 gap-4">
+              <button
+                onClick={() => setPaginaAtual((p) => Math.max(p - 1, 1))}
+                disabled={paginaAtual === 1}
+                className="px-4 py-2 rounded-full bg-white border border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 disabled:opacity-50"
+              >
+                Anterior
+              </button>
+              <span className="text-gray-700 font-semibold py-2">
+                Página {paginaAtual} de {totalPaginas}
+              </span>
+              <button
+                onClick={() => setPaginaAtual((p) => Math.min(p + 1, totalPaginas))}
+                disabled={paginaAtual === totalPaginas}
+                className="px-4 py-2 rounded-full bg-white border border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 disabled:opacity-50"
+              >
+                Próxima
+              </button>
+            </div>
+          </>
         )}
 
         {activeTab === "autores" && (
