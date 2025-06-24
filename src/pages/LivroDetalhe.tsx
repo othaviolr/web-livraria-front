@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import {
   BookOpen,
   Calendar,
-  Clock,
+  FileText,
   Globe,
   Layers,
   ArrowLeft,
@@ -68,7 +68,7 @@ export default function LivroDetalhe() {
     const mostrarTodos = exibirMais || paragrafos.length <= limite;
 
     return (
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
         {paragrafos
           .slice(0, mostrarTodos ? paragrafos.length : limite)
           .map((paragrafo, index) => {
@@ -78,7 +78,8 @@ export default function LivroDetalhe() {
             return (
               <p
                 key={index}
-                className="text-justify leading-relaxed text-[16px] text-[#333]"
+                style={{ letterSpacing: "0.01em", lineHeight: "1.15", margin: 0 }}
+                className="text-justify text-[16px] text-[#333]"
               >
                 {ehFraseDeImpacto ? <strong>{paragrafo}</strong> : paragrafo}
               </p>
@@ -180,7 +181,7 @@ export default function LivroDetalhe() {
 
           <div className="flex items-center gap-2">
             <Globe size={18} className="text-[#DAAA63]" />
-            <span>Idioma: Português</span>
+            <span>Idioma: {livro.idioma && livro.idioma.trim() !== "" ? livro.idioma : "--"}</span>
           </div>
 
           <div className="flex items-center gap-2">
@@ -189,8 +190,8 @@ export default function LivroDetalhe() {
           </div>
 
           <div className="flex items-center gap-2">
-            <Clock size={18} className="text-[#DAAA63]" />
-            <span>Média de leitura: ~7h</span>
+            <FileText size={18} className="text-[#DAAA63]" />
+            <span>Páginas: {livro.numeroPaginas || "--"}</span>
           </div>
         </div>
 
@@ -223,7 +224,7 @@ export default function LivroDetalhe() {
         </div>
 
         {/* Conteúdo da aba ativa */}
-        <section className="mt-6 text-[#4b4b4b] leading-relaxed max-w-[700px] min-h-[120px] flex flex-col gap-4">
+        <section className="mt-6 text-[#4b4b4b] max-w-[700px] min-h-[120px] flex flex-col gap-4">
           {abaAtiva === "Sinopse" && (
             <>
               {livro.sinopse && livro.sinopse.trim() !== "" ? (
