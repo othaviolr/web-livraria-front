@@ -181,21 +181,33 @@ export default function LivroDetalhe() {
         </div>
 
         {/* Abas */}
-        <div className="mt-10 border-b border-gray-300 flex gap-6">
-          {abas.map((aba) => (
-            <button
-              key={aba}
-              onClick={() => setAbaAtiva(aba)}
-              className={`py-2 font-semibold border-b-4 transition ${
-                abaAtiva === aba
-                  ? "text-[#DAAA63] border-[#DAAA63]"
-                  : "text-gray-600 border-transparent hover:text-[#DAAA63] hover:border-[#DAAA63]"
-              }`}
-            >
-              {aba}
-            </button>
-          ))}
-        </div>
+<div className="mt-10 border-b border-gray-300 flex gap-6">
+  {abas.map((aba) => {
+    // Pega o count dependendo da aba
+    let count = 0;
+    if (aba === "Edições") count = edicoes.length;
+    else if (aba === "Similares") count = similares.length;
+
+    return (
+      <button
+        key={aba}
+        onClick={() => setAbaAtiva(aba)}
+        className={`py-2 font-semibold border-b-4 transition ${
+          abaAtiva === aba
+            ? "text-[#DAAA63] border-[#DAAA63]"
+            : "text-gray-600 border-transparent hover:text-[#DAAA63] hover:border-[#DAAA63]"
+        }`}
+      >
+        {aba}
+        {count > 0 && (
+          <span className="ml-1 text-sm font-normal text-[#DAAA63]">
+            ({count})
+          </span>
+        )}
+      </button>
+    );
+  })}
+</div>
 
         {/* Conteúdo das abas */}
         <div className="mt-6 text-[#4b4b4b] leading-relaxed max-w-[700px] min-h-[120px] flex flex-col gap-4">
