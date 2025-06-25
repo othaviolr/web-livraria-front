@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 import { listarLivros } from "@/services/livrosService";
+import { listarAutores } from "@/services/autoresService";
 
 const exploreOptions = [
   "Lançamentos",
@@ -17,14 +18,17 @@ const exploreOptions = [
 export default function Livros() {
   const [activeTab, setActiveTab] = useState<"livros" | "autores" | "editoras">("livros");
   const [showExplore, setShowExplore] = useState(false);
+  const [inputSearch, setInputSearch] = useState("");
   const [search, setSearch] = useState("");
   const [livros, setLivros] = useState<any[]>([]);
+  const [autores, setAutores] = useState<any[]>([]);
   const [paginaAtual, setPaginaAtual] = useState(1);
   const [totalPaginas, setTotalPaginas] = useState(1);
   const livrosPorPagina = 16;
   const exploreRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(false);
 
+  // Carregar livros
   async function carregarLivros(filtro?: string, pagina = 1) {
     try {
       setLoading(true);
@@ -36,51 +40,83 @@ export default function Livros() {
     } catch (error) {
       console.error("Erro ao carregar livros:", error);
       setLivros([]);
+      setTotalPaginas(1);
     } finally {
       setLoading(false);
     }
   }
 
-  useEffect(() => {
-    carregarLivros(undefined, paginaAtual);
-  }, [paginaAtual]);
+  // Carregar autores
+  async function carregarAutores(filtro?: string, pagina = 1) {
+    try {
+      setLoading(true);
+      const data = await listarAutores(filtro);
+      setTotalPaginas(Math.ceil(data.length / livrosPorPagina));
+      const inicio = (pagina - 1) * livrosPorPagina;
+      const fim = inicio + livrosPorPagina;
+      setAutores(data.slice(inicio, fim));
+    } catch (error) {
+      console.error("Erro ao carregar autores:", error);
+      setAutores([]);
+      setTotalPaginas(1);
+    } finally {
+      setLoading(false);
+    }
+  }
 
+  // Atualiza dados quando aba, página ou filtro mudar
+  useEffect(() => {
+    if (activeTab === "livros") {
+      carregarLivros(search, paginaAtual);
+    } else if (activeTab === "autores") {
+      carregarAutores(search, paginaAtual);
+    } else {
+      setAutores([]);
+      setLivros([]);
+      setTotalPaginas(1);
+    }
+  }, [activeTab, paginaAtual, search]);
+
+  // Fecha o menu explorar ao clicar fora
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (exploreRef.current && !exploreRef.current.contains(event.target as Node)) {
         setShowExplore(false);
       }
     }
-
     if (showExplore) {
       document.addEventListener("mousedown", handleClickOutside);
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
     }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showExplore]);
 
+  // Quando clicar pesquisar ou apertar Enter: atualiza o filtro de busca e reseta a página
   function pesquisar() {
     setPaginaAtual(1);
-    carregarLivros(search, 1);
+    setSearch(inputSearch.trim());
   }
 
   const baseBtnClasses =
-    "flex items-center gap-2 border border-black border-opacity-40 px-6 py-1.5 rounded-full text-sm font-semibold transition-shadow duration-300 ease-in-out";
+    "flex items-center gap-2 border border-black border-opacity-20 px-6 py-1.5 rounded-full text-sm font-semibold transition-shadow duration-300 ease-in-out";
+
+  const tituloPorAba = {
+    livros: "Livros em destaque",
+    autores: "Autores em destaque",
+    editoras: "Editoras em destaque",
+  };
 
   return (
     <div className="px-8 md:px-32 py-10 max-w-[1440px] mx-auto">
-      <h1 className="text-3xl font-bold text-gray-800 mb-8">Livros em destaque</h1>
+      <h1 className="text-3xl font-bold text-gray-800 mb-8">{tituloPorAba[activeTab]}</h1>
 
       <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
         <input
           type="text"
           placeholder="Busque por título, autor, editora..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          value={inputSearch}
+          onChange={(e) => setInputSearch(e.target.value)}
           onKeyDown={(e) => { if (e.key === "Enter") pesquisar(); }}
           className="w-full md:w-2/3 px-4 py-2 border border-gray-300 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-[#DAAA63] transition-all"
         />
@@ -128,7 +164,12 @@ export default function Livros() {
         {["livros", "autores", "editoras"].map((tab) => (
           <button
             key={tab}
-            onClick={() => setActiveTab(tab as any)}
+            onClick={() => {
+              setActiveTab(tab as any);
+              setPaginaAtual(1);
+              setSearch("");
+              setInputSearch("");
+            }}
             className={`${baseBtnClasses} ${
               activeTab === tab
                 ? "bg-[#DAAA63] text-black shadow-md"
@@ -142,63 +183,87 @@ export default function Livros() {
 
       <div className="mt-10">
         {activeTab === "livros" && (
-          <>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-              {livros.length === 0 && !loading && (
-                <p className="col-span-full text-center text-gray-500">Nenhum livro encontrado.</p>
-              )}
-              {livros.map((livro) => (
-                <Link key={livro.id} to={`/livros/${livro.id}`}>
-                  <div className="flex flex-col items-center cursor-pointer group">
-                    <div className="overflow-hidden rounded-[20px] shadow-md">
-                      <img
-                        src={livro.imagemUrl || "/livros/default.jpg"}
-                        alt={livro.titulo}
-                        className="w-[160px] h-[240px] object-cover rounded-[20px] transition-transform duration-300 ease-in-out group-hover:scale-105"
-                      />
-                    </div>
-
-                    <div className="flex flex-col items-center mt-3 text-center">
-                      <h3 className="text-base font-semibold text-gray-800">{livro.titulo}</h3>
-                      <p className="text-sm text-gray-500 mt-1">{livro.autorNome}</p>
-                      <p className="text-xs text-gray-400">{livro.editoraNome}</p>
-                    </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            {livros.length === 0 && !loading && (
+              <p className="col-span-full text-center text-gray-500">Nenhum livro encontrado.</p>
+            )}
+            {livros.map((livro) => (
+              <Link key={livro.id} to={`/livros/${livro.id}`}>
+                <div className="flex flex-col items-center cursor-pointer group">
+                  <div className="overflow-hidden rounded-[20px] shadow-md">
+                    <img
+                      src={livro.imagemUrl || "/livros/default.jpg"}
+                      alt={livro.titulo}
+                      className="w-[160px] h-[240px] object-cover rounded-[20px] transition-transform duration-300 ease-in-out group-hover:scale-105"
+                    />
                   </div>
-                </Link>
-              ))}
-            </div>
 
-            {/* Paginação */}
-            <div className="flex justify-center mt-10 gap-4">
-              <button
-                onClick={() => setPaginaAtual((p) => Math.max(p - 1, 1))}
-                disabled={paginaAtual === 1}
-                className="px-4 py-2 rounded-full bg-white border border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 disabled:opacity-50"
-              >
-                Anterior
-              </button>
-              <span className="text-gray-700 font-semibold py-2">
-                Página {paginaAtual} de {totalPaginas}
-              </span>
-              <button
-                onClick={() => setPaginaAtual((p) => Math.min(p + 1, totalPaginas))}
-                disabled={paginaAtual === totalPaginas}
-                className="px-4 py-2 rounded-full bg-white border border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 disabled:opacity-50"
-              >
-                Próxima
-              </button>
-            </div>
-          </>
+                  <div className="flex flex-col items-center mt-3 text-center">
+                    <h3 className="text-base font-semibold text-gray-800">{livro.titulo}</h3>
+                    <p className="text-sm text-gray-500 mt-1">{livro.autorNome}</p>
+                    <p className="text-xs text-gray-400">{livro.editoraNome}</p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
         )}
 
         {activeTab === "autores" && (
-          <div className="text-gray-700 font-medium mt-4">Lista de autores aqui...</div>
+          <div className="flex flex-wrap justify-center gap-8">
+            {autores.length === 0 && !loading && (
+              <p className="col-span-full text-center text-gray-500">Nenhum autor encontrado.</p>
+            )}
+            {autores.map((autor) => (
+              <Link
+                key={autor.id}
+                to={`/autores/${autor.id}`}
+                className="flex flex-col items-center w-[180px] p-4 rounded-2xl shadow-md bg-white hover:shadow-lg transition-shadow cursor-pointer"
+              >
+                <div className="w-32 h-32 rounded-full overflow-hidden mb-4">
+                  <img
+                    src={autor.fotoUrl || "/autores/default.jpg"}
+                    alt={autor.nome}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-800 text-center">{autor.nome}</h3>
+                {autor.livrosCount && (
+                  <p className="text-gray-500 mt-1 text-sm text-center">
+                    {autor.livrosCount} livro{autor.livrosCount > 1 ? "s" : ""}
+                  </p>
+                )}
+              </Link>
+            ))}
+          </div>
         )}
 
         {activeTab === "editoras" && (
           <div className="text-gray-700 font-medium mt-4">Lista de editoras aqui...</div>
         )}
       </div>
+
+      {(activeTab === "livros" || activeTab === "autores") && (
+        <div className="flex justify-center mt-10 gap-4">
+          <button
+            onClick={() => setPaginaAtual((p) => Math.max(p - 1, 1))}
+            disabled={paginaAtual === 1}
+            className="px-4 py-2 rounded-full bg-white border border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 disabled:opacity-50"
+          >
+            Anterior
+          </button>
+          <span className="text-gray-700 font-semibold py-2">
+            Página {paginaAtual} de {totalPaginas}
+          </span>
+          <button
+            onClick={() => setPaginaAtual((p) => Math.min(p + 1, totalPaginas))}
+            disabled={paginaAtual === totalPaginas}
+            className="px-4 py-2 rounded-full bg-white border border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 disabled:opacity-50"
+          >
+            Próxima
+          </button>
+        </div>
+      )}
     </div>
   );
 }

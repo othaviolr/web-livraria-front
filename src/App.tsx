@@ -3,7 +3,8 @@ import Home from "@/pages/Home";
 import Livros from "@/pages/Livros";
 import Ranking from "@/pages/Ranking";
 import RankingCompleto from "@/pages/RankingCompleto";
-import LivroDetalhe from "@/pages/LivroDetalhe"; 
+import LivroDetalhe from "@/pages/LivroDetalhe";
+import AutorDetalhe from "@/pages/AutorDetalhe";
 import Header from "@/components/layout/Header";
 
 export default function App() {
@@ -16,7 +17,8 @@ export default function App() {
           <Route path="/livros" element={<Livros />} />
           <Route path="/ranking" element={<Ranking />} />
           <Route path="/ranking/completo" element={<RankingCompleto />} />
-          <Route path="/livros/:id" element={<LivroDetalhe />} /> 
+          <Route path="/livros/:id" element={<LivroDetalhe />} />
+          <Route path="/autores/:id" element={<AutorDetalhe />} />  
         </Routes>
       </div>
     </>
