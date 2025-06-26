@@ -5,6 +5,7 @@ import Ranking from "@/pages/Ranking";
 import RankingCompleto from "@/pages/RankingCompleto";
 import LivroDetalhe from "@/pages/LivroDetalhe";
 import AutorDetalhe from "@/pages/AutorDetalhe";
+import EditoraDetalhe from "@/pages/Editoras/[id]";
 import Header from "@/components/layout/Header";
 
 export default function App() {
@@ -18,7 +19,8 @@ export default function App() {
           <Route path="/ranking" element={<Ranking />} />
           <Route path="/ranking/completo" element={<RankingCompleto />} />
           <Route path="/livros/:id" element={<LivroDetalhe />} />
-          <Route path="/autores/:id" element={<AutorDetalhe />} />  
+          <Route path="/autores/:id" element={<AutorDetalhe />} />
+          <Route path="/editoras/:id" element={<EditoraDetalhe />} />
         </Routes>
       </div>
     </>

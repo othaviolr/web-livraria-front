@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 import { listarLivros } from "@/services/livrosService";
 import { listarAutores } from "@/services/autoresService";
+import { listarEditoras } from "@/services/editorasService"; // import novo
 
 const exploreOptions = [
   "Lançamentos",
@@ -22,13 +23,13 @@ export default function Livros() {
   const [search, setSearch] = useState("");
   const [livros, setLivros] = useState<any[]>([]);
   const [autores, setAutores] = useState<any[]>([]);
+  const [editoras, setEditoras] = useState<any[]>([]); // estado novo
   const [paginaAtual, setPaginaAtual] = useState(1);
   const [totalPaginas, setTotalPaginas] = useState(1);
   const livrosPorPagina = 16;
   const exploreRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(false);
 
-  // Carregar livros
   async function carregarLivros(filtro?: string, pagina = 1) {
     try {
       setLoading(true);
@@ -46,7 +47,6 @@ export default function Livros() {
     }
   }
 
-  // Carregar autores
   async function carregarAutores(filtro?: string, pagina = 1) {
     try {
       setLoading(true);
@@ -64,20 +64,33 @@ export default function Livros() {
     }
   }
 
-  // Atualiza dados quando aba, página ou filtro mudar
+  async function carregarEditoras(filtro?: string, pagina = 1) {
+  try {
+    setLoading(true);
+    const data = await listarEditoras(filtro); 
+    setTotalPaginas(Math.ceil(data.length / livrosPorPagina));
+    const inicio = (pagina - 1) * livrosPorPagina;
+    const fim = inicio + livrosPorPagina;
+    setEditoras(data.slice(inicio, fim));
+  } catch (error) {
+    console.error("Erro ao carregar editoras:", error);
+    setEditoras([]);
+    setTotalPaginas(1);
+  } finally {
+    setLoading(false);
+  }
+}
+
   useEffect(() => {
     if (activeTab === "livros") {
       carregarLivros(search, paginaAtual);
     } else if (activeTab === "autores") {
       carregarAutores(search, paginaAtual);
     } else {
-      setAutores([]);
-      setLivros([]);
-      setTotalPaginas(1);
+      carregarEditoras(search, paginaAtual);
     }
   }, [activeTab, paginaAtual, search]);
 
-  // Fecha o menu explorar ao clicar fora
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (exploreRef.current && !exploreRef.current.contains(event.target as Node)) {
@@ -92,7 +105,6 @@ export default function Livros() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showExplore]);
 
-  // Quando clicar pesquisar ou apertar Enter: atualiza o filtro de busca e reseta a página
   function pesquisar() {
     setPaginaAtual(1);
     setSearch(inputSearch.trim());
@@ -239,11 +251,36 @@ export default function Livros() {
         )}
 
         {activeTab === "editoras" && (
-          <div className="text-gray-700 font-medium mt-4">Lista de editoras aqui...</div>
+          <div className="flex flex-wrap justify-center gap-8">
+            {editoras.length === 0 && !loading && (
+              <p className="col-span-full text-center text-gray-500">Nenhuma editora encontrada.</p>
+            )}
+            {editoras.map((editora) => (
+              <Link
+                key={editora.id}
+                to={`/editoras/${editora.id}`}
+                className="flex flex-col items-center w-[180px] p-4 rounded-2xl shadow-md bg-white hover:shadow-lg transition-shadow cursor-pointer"
+              >
+                <div className="w-32 h-32 rounded-full overflow-hidden mb-4">
+                  <img
+                    src={editora.imagemUrl || "/editoras/default.jpg"}
+                    alt={editora.nome}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-800 text-center">{editora.nome}</h3>
+                {editora.biografia && (
+                  <p className="text-gray-500 mt-1 text-sm text-center line-clamp-3">
+                    {editora.biografia}
+                  </p>
+                )}
+              </Link>
+            ))}
+          </div>
         )}
       </div>
 
-      {(activeTab === "livros" || activeTab === "autores") && (
+      {(activeTab === "livros" || activeTab === "autores" || activeTab === "editoras") && (
         <div className="flex justify-center mt-10 gap-4">
           <button
             onClick={() => setPaginaAtual((p) => Math.max(p - 1, 1))}
