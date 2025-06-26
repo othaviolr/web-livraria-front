@@ -5,7 +5,7 @@ import Ranking from "@/pages/Ranking";
 import RankingCompleto from "@/pages/RankingCompleto";
 import LivroDetalhe from "@/pages/LivroDetalhe";
 import AutorDetalhe from "@/pages/AutorDetalhe";
-import EditoraDetalhe from "@/pages/Editoras/[id]";
+import EditoraDetalhe from "@/pages//EditoraDetalhe"; 
 import Header from "@/components/layout/Header";
 
 export default function App() {
