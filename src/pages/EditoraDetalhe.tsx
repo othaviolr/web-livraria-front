@@ -17,9 +17,11 @@ export default function EditoraDetalhe() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function carregarDados() {
-      if (!id) return;
+    if (!id) return;
 
+    let isCancelled = false; // Para evitar atualização de estado após unmount
+
+    async function carregarDados() {
       const editoraId = Number(id);
       if (isNaN(editoraId)) {
         console.error("ID da editora inválido:", id);
@@ -30,29 +32,37 @@ export default function EditoraDetalhe() {
       try {
         setLoading(true);
 
-        const editoraData = await obterEditoraPorId(editoraId);
+        const [editoraData, todosLivros, autoresDaEditora] = await Promise.all([
+          obterEditoraPorId(editoraId),
+          listarLivros(),
+          listarAutores(undefined, editoraId),
+        ]);
 
-        const todosLivros = await listarLivros();
-        const livrosEditora = todosLivros.filter((l) => l.editoraId === editoraId);
-
-        livrosEditora.sort(
-          (a, b) =>
-            new Date(b.anoPublicacao).getTime() - new Date(a.anoPublicacao).getTime()
-        );
-
-        const autoresDaEditora = await listarAutores(undefined, editoraId);
+        if (isCancelled) return;
 
         setEditora(editoraData);
+
+        const livrosEditora = todosLivros
+          .filter((l) => l.editoraId === editoraId)
+          .sort(
+            (a, b) =>
+              new Date(b.anoPublicacao).getTime() - new Date(a.anoPublicacao).getTime()
+          );
         setLivros(livrosEditora);
+
         setAutores(autoresDaEditora);
       } catch (error) {
         console.error("Erro ao carregar editora:", error);
       } finally {
-        setLoading(false);
+        if (!isCancelled) setLoading(false);
       }
     }
 
     carregarDados();
+
+    return () => {
+      isCancelled = true;
+    };
   }, [id]);
 
   if (loading)

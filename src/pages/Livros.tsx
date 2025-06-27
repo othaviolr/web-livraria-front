@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 import { listarLivros } from "@/services/livrosService";
 import { listarAutores } from "@/services/autoresService";
-import { listarEditoras } from "@/services/editorasService"; // import novo
+import { listarEditoras } from "@/services/editorasService";
 
 const exploreOptions = [
   "Lançamentos",
@@ -17,13 +17,20 @@ const exploreOptions = [
 ];
 
 export default function Livros() {
-  const [activeTab, setActiveTab] = useState<"livros" | "autores" | "editoras">("livros");
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const editoraIdParam = searchParams.get("editoraId");
+  const editoraId = editoraIdParam ? parseInt(editoraIdParam) : undefined;
+
+  const [activeTab, setActiveTab] = useState<"livros" | "autores" | "editoras">(
+    editoraId ? "autores" : "livros"
+  );
   const [showExplore, setShowExplore] = useState(false);
   const [inputSearch, setInputSearch] = useState("");
   const [search, setSearch] = useState("");
   const [livros, setLivros] = useState<any[]>([]);
   const [autores, setAutores] = useState<any[]>([]);
-  const [editoras, setEditoras] = useState<any[]>([]); // estado novo
+  const [editoras, setEditoras] = useState<any[]>([]);
   const [paginaAtual, setPaginaAtual] = useState(1);
   const [totalPaginas, setTotalPaginas] = useState(1);
   const livrosPorPagina = 16;
@@ -50,7 +57,7 @@ export default function Livros() {
   async function carregarAutores(filtro?: string, pagina = 1) {
     try {
       setLoading(true);
-      const data = await listarAutores(filtro);
+      const data = await listarAutores(filtro, editoraId);
       setTotalPaginas(Math.ceil(data.length / livrosPorPagina));
       const inicio = (pagina - 1) * livrosPorPagina;
       const fim = inicio + livrosPorPagina;
@@ -65,21 +72,21 @@ export default function Livros() {
   }
 
   async function carregarEditoras(filtro?: string, pagina = 1) {
-  try {
-    setLoading(true);
-    const data = await listarEditoras(filtro); 
-    setTotalPaginas(Math.ceil(data.length / livrosPorPagina));
-    const inicio = (pagina - 1) * livrosPorPagina;
-    const fim = inicio + livrosPorPagina;
-    setEditoras(data.slice(inicio, fim));
-  } catch (error) {
-    console.error("Erro ao carregar editoras:", error);
-    setEditoras([]);
-    setTotalPaginas(1);
-  } finally {
-    setLoading(false);
+    try {
+      setLoading(true);
+      const data = await listarEditoras(filtro);
+      setTotalPaginas(Math.ceil(data.length / livrosPorPagina));
+      const inicio = (pagina - 1) * livrosPorPagina;
+      const fim = inicio + livrosPorPagina;
+      setEditoras(data.slice(inicio, fim));
+    } catch (error) {
+      console.error("Erro ao carregar editoras:", error);
+      setEditoras([]);
+      setTotalPaginas(1);
+    } finally {
+      setLoading(false);
+    }
   }
-}
 
   useEffect(() => {
     if (activeTab === "livros") {
@@ -89,7 +96,7 @@ export default function Livros() {
     } else {
       carregarEditoras(search, paginaAtual);
     }
-  }, [activeTab, paginaAtual, search]);
+  }, [activeTab, paginaAtual, search, editoraId]); // <-- editoraId aqui
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -129,7 +136,9 @@ export default function Livros() {
           placeholder="Busque por título, autor, editora..."
           value={inputSearch}
           onChange={(e) => setInputSearch(e.target.value)}
-          onKeyDown={(e) => { if (e.key === "Enter") pesquisar(); }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") pesquisar();
+          }}
           className="w-full md:w-2/3 px-4 py-2 border border-gray-300 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-[#DAAA63] transition-all"
         />
 
@@ -197,7 +206,9 @@ export default function Livros() {
         {activeTab === "livros" && (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {livros.length === 0 && !loading && (
-              <p className="col-span-full text-center text-gray-500">Nenhum livro encontrado.</p>
+              <p className="col-span-full text-center text-gray-500">
+                Nenhum livro encontrado.
+              </p>
             )}
             {livros.map((livro) => (
               <Link key={livro.id} to={`/livros/${livro.id}`}>

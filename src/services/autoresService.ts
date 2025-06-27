@@ -8,7 +8,7 @@ export async function listarAutores(filtro?: string, editoraId?: number) {
     params.append("filtro", filtro.trim());
   }
 
-  if (editoraId) {
+  if (editoraId !== undefined && editoraId !== null) {
     params.append("editoraId", editoraId.toString());
   }
 
