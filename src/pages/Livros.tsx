@@ -20,11 +20,11 @@ export default function Livros() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const editoraIdParam = searchParams.get("editoraId");
+  const abaParam = searchParams.get("aba") as "livros" | "autores" | "editoras" | null;
+
   const editoraId = editoraIdParam ? parseInt(editoraIdParam) : undefined;
 
-  const [activeTab, setActiveTab] = useState<"livros" | "autores" | "editoras">(
-    editoraId ? "autores" : "livros"
-  );
+  const [activeTab, setActiveTab] = useState<"livros" | "autores" | "editoras">(abaParam ?? "livros");
   const [showExplore, setShowExplore] = useState(false);
   const [inputSearch, setInputSearch] = useState("");
   const [search, setSearch] = useState("");
@@ -96,7 +96,7 @@ export default function Livros() {
     } else {
       carregarEditoras(search, paginaAtual);
     }
-  }, [activeTab, paginaAtual, search, editoraId]); // <-- editoraId aqui
+  }, [activeTab, paginaAtual, search, editoraId]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -206,9 +206,7 @@ export default function Livros() {
         {activeTab === "livros" && (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {livros.length === 0 && !loading && (
-              <p className="col-span-full text-center text-gray-500">
-                Nenhum livro encontrado.
-              </p>
+              <p className="col-span-full text-center text-gray-500">Nenhum livro encontrado.</p>
             )}
             {livros.map((livro) => (
               <Link key={livro.id} to={`/livros/${livro.id}`}>
@@ -220,7 +218,6 @@ export default function Livros() {
                       className="w-[160px] h-[240px] object-cover rounded-[20px] transition-transform duration-300 ease-in-out group-hover:scale-105"
                     />
                   </div>
-
                   <div className="flex flex-col items-center mt-3 text-center">
                     <h3 className="text-base font-semibold text-gray-800">{livro.titulo}</h3>
                     <p className="text-sm text-gray-500 mt-1">{livro.autorNome}</p>

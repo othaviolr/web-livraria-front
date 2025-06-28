@@ -19,7 +19,7 @@ export default function EditoraDetalhe() {
   useEffect(() => {
     if (!id) return;
 
-    let isCancelled = false; // Para evitar atualização de estado após unmount
+    let isCancelled = false;
 
     async function carregarDados() {
       const editoraId = Number(id);
@@ -49,7 +49,6 @@ export default function EditoraDetalhe() {
               new Date(b.anoPublicacao).getTime() - new Date(a.anoPublicacao).getTime()
           );
         setLivros(livrosEditora);
-
         setAutores(autoresDaEditora);
       } catch (error) {
         console.error("Erro ao carregar editora:", error);
@@ -137,6 +136,7 @@ export default function EditoraDetalhe() {
         <h2 className="text-2xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
           <BookOpen className="text-[#DAAA63]" size={22} /> Últimos lançamentos
         </h2>
+
         {livros.length === 0 ? (
           <p className="text-gray-500 italic">Nenhum livro encontrado.</p>
         ) : (
@@ -170,9 +170,7 @@ export default function EditoraDetalhe() {
         {livros.length > 5 && (
           <div className="mt-6 text-center">
             <button
-              onClick={() =>
-                window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" })
-              }
+              onClick={() => navigate(`/livros?aba=livros&editoraId=${id}`)}
               className="text-[#DAAA63] font-medium hover:underline"
             >
               Ver todos os lançamentos ({livros.length})
