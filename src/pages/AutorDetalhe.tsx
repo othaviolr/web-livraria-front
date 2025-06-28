@@ -59,11 +59,11 @@ export default function AutorDetalhe() {
       </button>
 
       <div className="flex flex-col md:flex-row gap-10">
-        {/* Foto */}
+        {/* Foto redonda */}
         <img
           src={autor.fotoUrl || "/autores/default.jpg"}
           alt={autor.nome}
-          className="w-60 h-60 object-cover rounded-2xl shadow-md border border-gray-200"
+          className="w-60 h-60 object-cover rounded-full shadow-md border border-gray-200"
         />
 
         <div className="flex-1">
@@ -75,7 +75,9 @@ export default function AutorDetalhe() {
             {autor.dataNascimento && (
               <div className="flex items-center gap-3">
                 <Calendar className="text-[#DAAA63]" size={20} />
-                <span>{new Date(autor.dataNascimento).toLocaleDateString()}</span>
+                <span>
+                  {new Date(autor.dataNascimento).toLocaleDateString()}
+                </span>
               </div>
             )}
             {autor.localNascimento && (

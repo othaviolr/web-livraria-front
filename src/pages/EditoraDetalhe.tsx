@@ -85,10 +85,11 @@ export default function EditoraDetalhe() {
       </button>
 
       <div className="flex flex-col md:flex-row gap-10">
+        {/* Foto redonda da editora */}
         <img
           src={editora.imagemUrl || "/editoras/default.jpg"}
           alt={editora.nome}
-          className="w-60 h-60 object-cover rounded-2xl shadow-md border border-gray-200"
+          className="w-60 h-60 object-cover rounded-full shadow-md border border-gray-200"
         />
 
         <div className="flex-1">
