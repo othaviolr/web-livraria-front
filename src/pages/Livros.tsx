@@ -127,7 +127,7 @@ export default function Livros() {
   };
 
   return (
-    <div className="px-8 md:px-32 py-10 max-w-[1440px] mx-auto">
+    <div className="px-8 md:px-32 py-10 max-w-[1440px] mx-auto bg-gray-50 min-h-screen">
       <h1 className="text-3xl font-bold text-gray-800 mb-8">{tituloPorAba[activeTab]}</h1>
 
       <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
@@ -139,7 +139,7 @@ export default function Livros() {
           onKeyDown={(e) => {
             if (e.key === "Enter") pesquisar();
           }}
-          className="w-full md:w-2/3 px-4 py-2 border border-gray-300 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-[#DAAA63] transition-all"
+          className="w-full md:w-2/3 px-4 py-2 border border-gray-400 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-[#AA8B46] transition-all bg-white"
         />
 
         <div className="flex gap-2">
@@ -166,7 +166,7 @@ export default function Livros() {
                 {exploreOptions.map((opt) => (
                   <button
                     key={opt}
-                    className="w-full text-left px-4 py-2 rounded-md transition-all cursor-pointer hover:bg-[#DAAA63]/10 hover:text-[#DAAA63] font-medium"
+                    className="w-full text-left px-4 py-2 rounded-md transition-all cursor-pointer hover:bg-[#AA8B46]/10 hover:text-[#AA8B46] font-medium"
                     onClick={() => {
                       setShowExplore(false);
                       console.log("Selecionou:", opt);
@@ -210,8 +210,8 @@ export default function Livros() {
             )}
             {livros.map((livro) => (
               <Link key={livro.id} to={`/livros/${livro.id}`}>
-                <div className="flex flex-col items-center cursor-pointer group">
-                  <div className="overflow-hidden rounded-[20px] shadow-md">
+                <div className="flex flex-col items-center cursor-pointer group rounded-[20px] transition-shadow duration-300 ease-in-out">
+                  <div className="overflow-hidden rounded-[20px] shadow-sm">
                     <img
                       src={livro.imagemUrl || "/livros/default.jpg"}
                       alt={livro.titulo}
@@ -230,7 +230,7 @@ export default function Livros() {
         )}
 
         {activeTab === "autores" && (
-          <div className="flex flex-wrap justify-center gap-8">
+          <div className="flex flex-wrap justify-center gap-10">
             {autores.length === 0 && !loading && (
               <p className="col-span-full text-center text-gray-500">Nenhum autor encontrado.</p>
             )}
@@ -238,28 +238,23 @@ export default function Livros() {
               <Link
                 key={autor.id}
                 to={`/autores/${autor.id}`}
-                className="flex flex-col items-center w-[180px] p-4 rounded-2xl shadow-md bg-white hover:shadow-lg transition-shadow cursor-pointer"
+                className="flex flex-col items-center cursor-pointer group"
               >
-                <div className="w-32 h-32 rounded-full overflow-hidden mb-4">
+                <div className="w-[120px] h-[120px] rounded-full overflow-hidden shadow-sm border border-gray-300 transition-shadow duration-300 ease-in-out group-hover:shadow-lg group-hover:border-[#DAAA63]">
                   <img
                     src={autor.fotoUrl || "/autores/default.jpg"}
                     alt={autor.nome}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
                   />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-800 text-center">{autor.nome}</h3>
-                {autor.livrosCount && (
-                  <p className="text-gray-500 mt-1 text-sm text-center">
-                    {autor.livrosCount} livro{autor.livrosCount > 1 ? "s" : ""}
-                  </p>
-                )}
+                <h3 className="text-lg font-semibold text-gray-900 mt-4 text-center">{autor.nome}</h3>
               </Link>
             ))}
           </div>
         )}
 
         {activeTab === "editoras" && (
-          <div className="flex flex-wrap justify-center gap-8">
+          <div className="flex flex-wrap justify-center gap-10">
             {editoras.length === 0 && !loading && (
               <p className="col-span-full text-center text-gray-500">Nenhuma editora encontrada.</p>
             )}
@@ -267,21 +262,16 @@ export default function Livros() {
               <Link
                 key={editora.id}
                 to={`/editoras/${editora.id}`}
-                className="flex flex-col items-center w-[180px] p-4 rounded-2xl shadow-md bg-white hover:shadow-lg transition-shadow cursor-pointer"
+                className="flex flex-col items-center cursor-pointer group"
               >
-                <div className="w-32 h-32 rounded-full overflow-hidden mb-4">
+                <div className="w-[120px] h-[120px] rounded-full overflow-hidden shadow-sm border border-gray-300 transition-shadow duration-300 ease-in-out group-hover:shadow-lg group-hover:border-[#DAAA63]">
                   <img
                     src={editora.imagemUrl || "/editoras/default.jpg"}
                     alt={editora.nome}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
                   />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-800 text-center">{editora.nome}</h3>
-                {editora.biografia && (
-                  <p className="text-gray-500 mt-1 text-sm text-center line-clamp-3">
-                    {editora.biografia}
-                  </p>
-                )}
+                <h3 className="text-lg font-semibold text-gray-900 mt-4 text-center">{editora.nome}</h3>
               </Link>
             ))}
           </div>
