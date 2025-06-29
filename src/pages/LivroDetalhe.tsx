@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   BookOpen,
   Calendar,
@@ -19,12 +19,12 @@ import { obterLivroPorId, listarLivros } from "@/services/livrosService";
 
 export default function LivroDetalhe() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [livro, setLivro] = useState<any>(null);
   const [todosLivros, setTodosLivros] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [exibirMais, setExibirMais] = useState(false);
 
-  // Estatísticas mockadas (pode depois integrar da API)
   const [favoritos, setFavoritos] = useState(7);
   const [desejados, setDesejados] = useState(40);
   const [avaliaram, setAvaliaram] = useState(467);
@@ -32,13 +32,31 @@ export default function LivroDetalhe() {
   const abas = ["Sinopse", "Edições", "Similares", "Leia online (PDF)"];
   const [abaAtiva, setAbaAtiva] = useState("Sinopse");
 
+  const [resenhaExpandida, setResenhaExpandida] = useState(false);
+
+  const resenhas = [
+    {
+      usuario: "@JungKook",
+      fotoUrl: "/livros/jk.jpg",
+      texto:
+        "A Valérie Perrin é a Carla Madeira da França!! Escrita bizarra e sinto q esse livro ela finalmente acertou na sensibilidade e no bom plot... sério, me tocou mesmo, a leitura fluiu demais e recomendo para todos que gostam de uma trama envolvente e cheia de emoção.",
+      tempo: "1 semana atrás",
+    },
+    {
+      usuario: "@leiturasegura",
+      fotoUrl: "/livros/jk.png",
+      texto:
+        "Gostei muito da construção da personagem principal, mas achei o meio do livro meio arrastado. Ainda assim, recomendo! A escrita é muito sensível e me prendeu do começo ao fim.",
+      tempo: "2 semanas atrás",
+    },
+  ];
+
   useEffect(() => {
     async function carregarDados() {
       try {
         setLoading(true);
         const livroData = await obterLivroPorId(Number(id));
         setLivro(livroData);
-
         const livros = await listarLivros();
         setTodosLivros(livros);
       } catch (error) {
@@ -50,17 +68,8 @@ export default function LivroDetalhe() {
     carregarDados();
   }, [id]);
 
-  if (loading) {
-    return (
-      <div className="p-10 text-center text-gray-500">Carregando livro...</div>
-    );
-  }
-
-  if (!livro) {
-    return (
-      <div className="p-10 text-center text-red-500">Livro não encontrado.</div>
-    );
-  }
+  if (loading) return <div className="p-10 text-center text-gray-500">Carregando livro...</div>;
+  if (!livro) return <div className="p-10 text-center text-red-500">Livro não encontrado.</div>;
 
   const paragrafoFormatado = (texto: string) => {
     const paragrafos = texto.split("\n").filter((p) => p.trim() !== "");
@@ -98,12 +107,10 @@ export default function LivroDetalhe() {
     );
   };
 
-  // Filtrar edições: mesmo autor e editora, excluindo o próprio livro
   const edicoes = todosLivros.filter(
     (l) => l.id !== livro.id && l.autorId === livro.autorId && l.editoraId === livro.editoraId
   );
 
-  // Para similares, excluir livro atual e edições já listadas
   const idsExcluir = new Set(edicoes.map((l) => l.id));
   idsExcluir.add(livro.id);
 
@@ -116,7 +123,6 @@ export default function LivroDetalhe() {
     )
     .slice(0, 3);
 
-  // Card para edições e similares
   const LivroCard = ({ livro }: { livro: any }) => (
     <div
       onClick={() => (window.location.href = `/livro/${livro.id}`)}
@@ -137,13 +143,11 @@ export default function LivroDetalhe() {
     </div>
   );
 
-  // Botões de ação
   const baseBtnClasses =
     "flex items-center gap-2 border border-black border-opacity-40 px-6 py-1.5 rounded-full text-sm font-semibold transition-shadow duration-300 ease-in-out cursor-pointer";
 
   return (
     <div className="max-w-[1200px] mx-auto p-8 flex flex-col md:flex-row gap-10">
-      {/* Botão Voltar */}
       <button
         onClick={() => window.history.back()}
         className="flex items-center gap-2 mb-6 text-[#DAAA63] font-semibold hover:text-[#c29242] transition"
@@ -152,7 +156,6 @@ export default function LivroDetalhe() {
         Voltar
       </button>
 
-      {/* Imagem do livro */}
       <div className="flex-shrink-0">
         <img
           src={livro.imagemUrl || "/livros/default.jpg"}
@@ -161,13 +164,10 @@ export default function LivroDetalhe() {
         />
       </div>
 
-      {/* Conteúdo principal */}
       <div className="flex-1 flex flex-col">
-        {/* Título e info básica */}
         <h1 className="text-3xl font-extrabold text-gray-900">{livro.titulo}</h1>
         <p className="text-lg text-[#4b4b4b] italic mt-1">Dark Romance</p>
 
-        {/* Informações estilizadas */}
         <div className="mt-5 flex flex-wrap gap-6 text-[#3a3a3a] text-sm font-medium max-w-[400px]">
           <div className="flex items-center gap-2">
             <BookOpen size={18} className="text-[#DAAA63]" />
@@ -181,7 +181,7 @@ export default function LivroDetalhe() {
 
           <div className="flex items-center gap-2">
             <Globe size={18} className="text-[#DAAA63]" />
-            <span>Idioma: {livro.idioma && livro.idioma.trim() !== "" ? livro.idioma : "--"}</span>
+            <span>Idioma: {livro.idioma || "--"}</span>
           </div>
 
           <div className="flex items-center gap-2">
@@ -195,7 +195,6 @@ export default function LivroDetalhe() {
           </div>
         </div>
 
-        {/* Abas com contagem */}
         <div className="mt-10 border-b border-gray-300 flex gap-6">
           {abas.map((aba) => {
             let count = 0;
@@ -223,7 +222,6 @@ export default function LivroDetalhe() {
           })}
         </div>
 
-        {/* Conteúdo da aba ativa */}
         <section className="mt-6 text-[#4b4b4b] max-w-[700px] min-h-[120px] flex flex-col gap-4">
           {abaAtiva === "Sinopse" && (
             <>
@@ -341,6 +339,52 @@ export default function LivroDetalhe() {
           >
             Avaliaram ({avaliaram})
           </button>
+        </div>
+
+        {/* Resenha única com "leia mais" */}
+        <div className="mt-12 max-w-[700px]">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold text-gray-800">
+              Resenhas para {livro.titulo} ({resenhas.length})
+            </h2>
+            <button
+              onClick={() => navigate(`/livro/${id}/resenhas`)}
+              className="text-[#DAAA63] text-sm font-medium hover:underline"
+            >
+              ver mais
+            </button>
+          </div>
+
+          {resenhas.length > 0 && (
+            <div className="bg-gray-50 border border-gray-200 p-4 rounded-lg mb-4 flex gap-4">
+              <img
+                src={resenhas[0].fotoUrl}
+                alt={resenhas[0].usuario}
+                className="w-12 h-12 rounded-full object-cover flex-shrink-0"
+              />
+              <div className="flex flex-col">
+                <div className="font-bold text-gray-800 mb-1">{livro.titulo}</div>
+                <div className="text-sm text-gray-700 font-semibold mb-1">
+                  {resenhas[0].usuario}{" "}
+                  <span className="font-normal text-gray-500">— {resenhas[0].tempo}</span>
+                </div>
+                <div className="text-sm text-gray-800 max-w-[600px]">
+                  {resenhaExpandida || resenhas[0].texto.length <= 140
+                    ? resenhas[0].texto
+                    : resenhas[0].texto.slice(0, 140).trim() + "..."}{" "}
+                  {resenhas[0].texto.length > 140 && (
+                    <button
+                      onClick={() => setResenhaExpandida(!resenhaExpandida)}
+                      className="text-[#DAAA63] font-semibold hover:underline"
+                      type="button"
+                    >
+                      {resenhaExpandida ? "mostrar menos" : "leia mais"}
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
