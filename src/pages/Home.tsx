@@ -1,4 +1,3 @@
-import Header from "@/components/layout/Header";
 import HeroSection from "@/components/hero/HeroSection";
 import { PodiumBooks } from "@/components/hero/PodiumBooks";
 import { AuthorOfTheYearCard } from "@/components/spotlight/AuthorOfTheYearCard";
@@ -6,7 +5,6 @@ import { KoreanLiteratureCard } from "@/components/spotlight/KoreanLiteratureCar
 import BookShelf from "@/components/layout/BookShelfDivider";
 import TrendingBooks from "@/components/book/TrendingBooks";
 import type { Book } from "@/types/Book";
-
 
 const books: [Book, Book, Book] = [
   { title: "Livro Esquerda", author: "Autor 1", image: "/livros/livro1.jpg" },
@@ -17,7 +15,7 @@ const books: [Book, Book, Book] = [
 export default function Home() {
   return (
     <main className="relative min-h-screen max-w-[1920px] mx-auto px-12 pt-[80px]">
-      <Header />
+      {/* Header foi removido daqui, pois já está no App.tsx */}
 
       {/* Título + barra de pesquisa */}
       <div className="absolute top-[180px] left-[100px] w-[300px] z-10">
@@ -33,10 +31,10 @@ export default function Home() {
         <KoreanLiteratureCard />
       </div>
 
-<div className="pt-[500px] relative z-0">
-  <BookShelf />
-  <TrendingBooks />
-</div>
+      <div className="pt-[500px] relative z-0">
+        <BookShelf />
+        <TrendingBooks />
+      </div>
     </main>
   );
 }
