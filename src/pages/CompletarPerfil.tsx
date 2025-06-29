@@ -64,6 +64,16 @@ export default function CompletarPerfil() {
         setLoading(false);
         return;
       }
+      const dataAtualizado = await response.json();
+
+      // Atualiza token no localStorage com o token novo retornado (supondo que API retorne o novo token)
+      if (dataAtualizado.token) {
+        localStorage.setItem("token", dataAtualizado.token);
+        // Dispara evento para avisar que o token (e a foto) mudaram
+        window.dispatchEvent(new Event("tokenChanged"));
+      }
+
+      setLoading(false);
       navigate("/");
     } catch {
       setErro("Erro na comunicação com o servidor");
