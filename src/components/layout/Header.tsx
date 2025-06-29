@@ -97,14 +97,16 @@ export default function Header({ isLoggedIn, setIsLoggedIn }: HeaderProps) {
 
       <nav className="flex gap-4">
         <button
-          className="flex items-center gap-2 bg-[#DAAA63] text-black border border-black border-opacity-50 px-5 py-1 rounded-full text-sm shadow hover:bg-[#c29242] transition-colors"
+          className="flex items-center gap-2 bg-[#DAAA63] text-black border border-black border-opacity-50 px-5 py-1 rounded-full text-sm shadow 
+          hover:bg-[#E3C780] transition-colors"
           onClick={() => navigate("/livros")}
         >
           <BookOpen className="w-4 h-4" />
           Livros
         </button>
         <button
-          className="flex items-center gap-2 bg-white text-gray-900 border border-black border-opacity-50 px-5 py-1 rounded-full text-sm shadow hover:bg-gray-50 transition-colors"
+          className="flex items-center gap-2 bg-white text-gray-900 border border-black border-opacity-50 px-5 py-1 rounded-full text-sm shadow 
+          hover:bg-[#FAF5E1] hover:text-[#DAAA63] transition-colors"
           onClick={() => navigate("/ranking")}
         >
           <TrendingUp className="w-4 h-4" />
@@ -147,7 +149,11 @@ export default function Header({ isLoggedIn, setIsLoggedIn }: HeaderProps) {
                 type="button"
               >
                 <img
-                  src={userPhotoUrl && userPhotoUrl.trim() !== "" ? userPhotoUrl : "/default-user.png"}
+                  src={
+                    userPhotoUrl && userPhotoUrl.trim() !== ""
+                      ? userPhotoUrl
+                      : "/default-user.png"
+                  }
                   alt="Usuário"
                   className="w-full h-full object-cover rounded-full"
                 />
